@@ -2,15 +2,15 @@
 <module version="4">
   <component name="FacetManager">
     <facet type="kotlin-language" name="Kotlin">
-      <configuration version="3" platform="JavaScript " allPlatforms="JS []" useProjectSettings="false" isTestModule="true" externalProjectId="dice-roller" pureKotlinSourceFolders="$MODULE_DIR$/../../src/test/kotlin;/Users/severinrudie/Desktop/personal-code/dice-roller/src/main/kotlin">
+      <configuration version="3" platform="JavaScript " allPlatforms="JS []" useProjectSettings="false" isTestModule="true" externalProjectId=":core" pureKotlinSourceFolders="$MODULE_DIR$/../../../core/src/test/kotlin;/Users/severinrudie/Desktop/personal-code/dice-roller/core/src/main/kotlin">
         <sourceSets>
-          <sourceSet>dice-roller.main~1</sourceSet>
+          <sourceSet>dice-roller.core.main~1</sourceSet>
         </sourceSets>
         <newMppModelJpsModuleKind>COMPILATION_AND_SOURCE_SET_HOLDER</newMppModelJpsModuleKind>
-        <externalSystemTestTasks>browserTest|dice-roller:test|Js</externalSystemTestTasks>
+        <externalSystemTestTasks>browserTest|:core:test|Js</externalSystemTestTasks>
         <compilerSettings />
         <compilerArguments>
-          <option name="outputFile" value="$MODULE_DIR$/../../build/js/packages/dice-roller-test/kotlin/dice-roller-test.js" />
+          <option name="outputFile" value="$MODULE_DIR$/../../../build/js/packages/dice-roller-core-test/kotlin/dice-roller-core-test.js" />
           <option name="noStdlib" value="true" />
           <option name="sourceMap" value="true" />
           <option name="metaInfo" value="true" />

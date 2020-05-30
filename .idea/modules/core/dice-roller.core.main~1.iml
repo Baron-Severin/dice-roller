@@ -2,11 +2,11 @@
 <module version="4">
   <component name="FacetManager">
     <facet type="kotlin-language" name="Kotlin">
-      <configuration version="3" platform="JavaScript " allPlatforms="JS []" useProjectSettings="false" isTestModule="false" externalProjectId="dice-roller" pureKotlinSourceFolders="$MODULE_DIR$/../../src/test/kotlin;/Users/severinrudie/Desktop/personal-code/dice-roller/src/main/kotlin">
+      <configuration version="3" platform="JavaScript " allPlatforms="JS []" useProjectSettings="false" isTestModule="false" externalProjectId=":core" pureKotlinSourceFolders="$MODULE_DIR$/../../../core/src/test/kotlin;/Users/severinrudie/Desktop/personal-code/dice-roller/core/src/main/kotlin">
         <newMppModelJpsModuleKind>COMPILATION_AND_SOURCE_SET_HOLDER</newMppModelJpsModuleKind>
         <compilerSettings />
         <compilerArguments>
-          <option name="outputFile" value="$MODULE_DIR$/../../build/js/packages/dice-roller/kotlin/dice-roller.js" />
+          <option name="outputFile" value="$MODULE_DIR$/../../../build/js/packages/dice-roller-core/kotlin/dice-roller-core.js" />
           <option name="noStdlib" value="true" />
           <option name="sourceMap" value="true" />
           <option name="metaInfo" value="true" />

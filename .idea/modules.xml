@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/core/dice-roller.core.main.iml" filepath="$PROJECT_DIR$/.idea/modules/core/dice-roller.core.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/core/dice-roller.core.test.iml" filepath="$PROJECT_DIR$/.idea/modules/core/dice-roller.core.test.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/engine/dice-roller.engine.main.iml" filepath="$PROJECT_DIR$/.idea/modules/engine/dice-roller.engine.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/engine/dice-roller.engine.test.iml" filepath="$PROJECT_DIR$/.idea/modules/engine/dice-roller.engine.test.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/view.iml" filepath="$PROJECT_DIR$/.idea/modules/view.iml" />
+    </modules>
+  </component>
+</project>

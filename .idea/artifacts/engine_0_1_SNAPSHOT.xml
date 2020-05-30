@@ -1,0 +1,6 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="engine-0.1-SNAPSHOT">
+    <output-path>$PROJECT_DIR$/engine/build/libs</output-path>
+    <root id="archive" name="engine-0.1-SNAPSHOT.jar" />
+  </artifact>
+</component>
