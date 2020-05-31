@@ -12,17 +12,6 @@ allprojects {
     }
 }
 
-//dependencies {
-//    implementation(project(":engine"))
-//
-//    implementation("org.jetbrains.kotlin:kotlin-stdlib-js")
-//    testCompile("junit:junit:4.12")
-//
-//    testImplementation("org.jetbrains.kotlin:kotlin-test-js")
-//}
-
-//kotlin.target.browser { }
-
 tasks {
     wrapper {
         distributionType = Wrapper.DistributionType.ALL
