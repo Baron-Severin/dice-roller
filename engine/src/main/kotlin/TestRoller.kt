@@ -13,7 +13,7 @@ interface DiceRoll {
 
 class RealDiceRoll : DiceRoll {
     override fun roll(): Int {
-        return Random.nextDouble().toInt()
+        return (Random.nextDouble() * 100).toInt()
     }
 }
 
@@ -23,9 +23,9 @@ class TestRoller(private val diceRoll: DiceRoll) {
         val unmodifiedSuccessLevels = abs((roll / 10) - (threshold / 10))
 
         val (didSucceed, successLevels) = if (roll >= 96 && threshold >= 96) {
-            false to 1
+            false to max(1, unmodifiedSuccessLevels)
         } else if (roll <= 5 && threshold <= 5) {
-            true to 1
+            true to max(1, unmodifiedSuccessLevels)
         } else {
             (roll <= threshold) to unmodifiedSuccessLevels
         }

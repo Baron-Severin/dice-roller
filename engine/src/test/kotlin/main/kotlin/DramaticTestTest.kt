@@ -97,17 +97,17 @@ class DramaticTestTest {
     }
 
     @Test
-    fun GIVEN_threshold_is_super_high_WHEN_roll_is_96_to_100_THEN_should_fail() {
-        testSimpleRoll(200, 96, false, 1, false)
-    }
-
-    @Test
     fun GIVEN_threshold_is_super_low_WHEN_roll_is_normal_THEN_success_level_should_be_huge() {
         testSimpleRoll(-30, 50, false, 8, false)
     }
+    
+    @Test
+    fun GIVEN_threshold_is_very_high_WHEN_roll_is_96_to_100_THEN_success_levels_should_be_high() {
+        testSimpleRoll(120, 96, false, 3, false)
+    }
 
     @Test
-    fun GIVEN_threshold_is_super_low_WHEN_roll_is_1_to_5_THEN_should_succeed() {
-        testSimpleRoll(-30, 5, true, 1, false)
+    fun GIVEN_threshold_is_very_low_WHEN_roll_is_1_to_5_THEN_success_levels_should_be_high() {
+        testSimpleRoll(-50, 4, true, 5, false)
     }
 }
