@@ -5,21 +5,19 @@ import kotlin.browser.document
 import kotlin.browser.window
 
 fun main() {
-    window.setTimeout({ // todo replace with ondocumentload
+    window.onload = {
         val thresholdInput = document.getElementById("threshold") as HTMLInputElement
         val rollButton = document.getElementById("roll") as HTMLButtonElement
         val didSucceed = document.getElementById("didSucceed") as HTMLParagraphElement
         val successLevelsP = document.getElementById("successLevels") as HTMLParagraphElement
 
         rollButton.addEventListener("click", {
-            val threshold = thresholdInput.value.toInt() ?: 0
+            val threshold = thresholdInput.value.toInt()
 
-//            // TODO expose TestRoller in a nicer way
-            val result = TestRoller(RealDiceRoll()).dramaticTest(threshold)
+            // TODO expose TestRoller in a nicer way
+            val result = Test.dramaticTest(threshold)
             didSucceed.innerHTML = "Did Succeed: ${result.didSucceed}"
             successLevelsP.innerHTML = "Success Levels: ${result.successLevels}"
-            console.log(result)
-
         })
-    }, 1_000)
+    }
 }

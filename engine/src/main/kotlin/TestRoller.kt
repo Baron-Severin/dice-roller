@@ -4,22 +4,11 @@ import kotlin.random.Random
 
 data class RollResult(val didSucceed: Boolean, val successLevels: Int, val didCrit: Boolean)
 
-interface DiceRoll {
-    /**
-     * @return 1-100
-     */
-    fun roll(): Int
-}
+internal val realDiceRoll = { (Random.nextDouble() * 100).toInt() }
 
-class RealDiceRoll : DiceRoll {
-    override fun roll(): Int {
-        return (Random.nextDouble() * 100).toInt()
-    }
-}
-
-class TestRoller(private val diceRoll: DiceRoll) {
+class TestRoller(private val d100Roll: () -> Int) { // TODO make internal, figure out why that breaks the test
     fun dramaticTest(threshold: Int): RollResult {
-        val roll = diceRoll.roll()
+        val roll = d100Roll()
         val unmodifiedSuccessLevels = abs((roll / 10) - (threshold / 10))
 
         val (didSucceed, successLevels) = if (roll >= 96 && threshold >= 96) {

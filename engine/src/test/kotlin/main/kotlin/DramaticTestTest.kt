@@ -1,6 +1,5 @@
 package main.kotlin
 
-import DiceRoll
 import TestRoller
 import kotlin.test.BeforeTest
 import kotlin.test.Test
@@ -8,21 +7,14 @@ import kotlin.test.assertEquals
 
 class DramaticTestTest {
 
-    class FakeDiceRoll : DiceRoll {
-        var nextRoll = 0
+    private var nextRoll = 0
+    private val fakeDiceRoll: () -> Int = { nextRoll }
 
-        override fun roll(): Int {
-            return nextRoll
-        }
-    }
-
-    private lateinit var fakeRoll: FakeDiceRoll
     private lateinit var roller: TestRoller
 
     @BeforeTest
     fun setup() {
-        fakeRoll = FakeDiceRoll()
-        roller = TestRoller(fakeRoll)
+        roller = TestRoller(fakeDiceRoll)
     }
 
     private fun testSimpleRoll(
@@ -32,7 +24,7 @@ class DramaticTestTest {
         expectedSuccessLevels: Int,
         expectedCrit: Boolean
     ) {
-        fakeRoll.nextRoll = roll
+        nextRoll = roll
         val result = roller.dramaticTest(threshold)
 
         println("result: $result")
