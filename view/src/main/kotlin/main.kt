@@ -5,6 +5,7 @@ import kotlin.browser.document
 import kotlin.browser.window
 
 fun main() {
+    // TODO this looks neat.  Use it. https://kotlinlang.org/docs/tutorials/javascript/typesafe-html-dsl.html
     window.onload = {
         val thresholdInput = document.getElementById("threshold") as HTMLInputElement
         val rollButton = document.getElementById("roll") as HTMLButtonElement

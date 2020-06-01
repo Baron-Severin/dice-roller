@@ -2,12 +2,16 @@ import kotlin.math.abs
 import kotlin.math.max
 import kotlin.random.Random
 
-data class RollResult(val didSucceed: Boolean, val successLevels: Int, val didCrit: Boolean)
+data class DramaticTestResult(val didSucceed: Boolean, val successLevels: Int, val didCrit: Boolean)
+data class SimpleTestResult(val didSucceed: Boolean, val didCrit: Boolean)
+
+enum class BodyLocation { HEAD, LEFT_ARM, RIGHT_ARM, BODY, LEFT_LEG, RIGHT_LEG }
 
 internal val realDiceRoll = { (Random.nextDouble() * 100).toInt() }
 
-class TestRoller(private val d100Roll: () -> Int) { // TODO make internal, figure out why that breaks the test
-    fun dramaticTest(threshold: Int): RollResult {
+@VisibleForTesting(otherwise = VisibleForTesting.INTERNAL)
+class TestRoller(private val d100Roll: () -> Int) {
+    fun dramaticTest(threshold: Int): DramaticTestResult {
         val roll = d100Roll()
         val unmodifiedSuccessLevels = abs((roll / 10) - (threshold / 10))
 
@@ -18,10 +22,35 @@ class TestRoller(private val d100Roll: () -> Int) { // TODO make internal, figur
         } else {
             (roll <= threshold) to unmodifiedSuccessLevels
         }
+        val modifiedSL = if (didSucceed) successLevels else -successLevels
 
         val didCrit = roll == 100 ||
                 (roll % 10) == (roll / 10)
 
-        return RollResult(didSucceed, successLevels, didCrit)
+        return DramaticTestResult(didSucceed, modifiedSL, didCrit)
+    }
+
+    fun simpleTest(threshold: Int): SimpleTestResult {
+        val dramatic = dramaticTest(threshold)
+        return SimpleTestResult(dramatic.didSucceed, dramatic.didCrit)
+    }
+
+    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
+    fun flipDigits(roll: Int): Int = when (roll) {
+        100 -> 100
+        else -> (roll / 10) + ((roll % 10) * 10)
+    }
+
+    fun hitLocation(roll: Int): BodyLocation {
+        val flippedRoll = flipDigits(roll)
+        return when (flippedRoll) {
+            in 1..9 -> BodyLocation.HEAD
+            in 10..24 -> BodyLocation.LEFT_ARM
+            in 25..44 -> BodyLocation.RIGHT_ARM
+            in 45..79 -> BodyLocation.BODY
+            in 80..89 -> BodyLocation.LEFT_LEG
+            in 90..100 -> BodyLocation.RIGHT_LEG
+            else -> throw IllegalArgumentException("Roll must be within 1-100")
+        }
     }
 }
