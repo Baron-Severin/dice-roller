@@ -2,8 +2,10 @@ import kotlin.math.abs
 import kotlin.math.max
 import kotlin.random.Random
 
-data class DramaticTestResult(val didSucceed: Boolean, val successLevels: Int, val didCrit: Boolean)
-data class SimpleTestResult(val didSucceed: Boolean, val didCrit: Boolean)
+data class TestInputs(val roll: Int, val threshold: Int, val margin: Int)
+
+data class DramaticTestResult(val inputs: TestInputs, val didSucceed: Boolean, val successLevels: Int, val didCrit: Boolean)
+data class SimpleTestResult(val inputs: TestInputs, val didSucceed: Boolean, val didCrit: Boolean)
 
 enum class BodyLocation { HEAD, LEFT_ARM, RIGHT_ARM, BODY, LEFT_LEG, RIGHT_LEG }
 
@@ -27,12 +29,12 @@ class TestRoller(private val d100Roll: () -> Int) {
         val didCrit = roll == 100 ||
                 (roll % 10) == (roll / 10)
 
-        return DramaticTestResult(didSucceed, modifiedSL, didCrit)
+        return DramaticTestResult(TestInputs(roll, threshold, threshold - roll), didSucceed, modifiedSL, didCrit)
     }
 
     fun simpleTest(threshold: Int): SimpleTestResult {
         val dramatic = dramaticTest(threshold)
-        return SimpleTestResult(dramatic.didSucceed, dramatic.didCrit)
+        return SimpleTestResult(dramatic.inputs, dramatic.didSucceed, dramatic.didCrit)
     }
 
     @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
