@@ -18,7 +18,9 @@ sealed class AttackDetails {
 }
 
 sealed class CheckResult {
-    object None : CheckResult()
+    object None : CheckResult() {
+        override fun toString() = JSON.stringify(this)
+    }
     data class Simple(
         val inputs: CheckInputs,
         val didSucceed: Boolean,

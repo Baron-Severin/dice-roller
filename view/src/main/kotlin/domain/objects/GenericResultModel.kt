@@ -1,9 +1,14 @@
+package domain.objects
+
+import AttackDetails
+import CheckInputs
+import CheckResult
 
 /**
  * TODO
  * used by view
  */
-data class GenericResultDisplay(
+data class GenericResultModel(
     val inputs: CheckInputs?,
     val didSucceed: Boolean?,
     val successLevels: Int?,
@@ -11,50 +16,50 @@ data class GenericResultDisplay(
     val attack: AttackDetails?
 )
 
-fun CheckResult.toDisplay(): GenericResultDisplay = when(this) {
-    is CheckResult.None -> GenericResultDisplay(
+fun CheckResult.toDisplay(): GenericResultModel = when(this) {
+    is CheckResult.None -> GenericResultModel(
         inputs = null,
         didSucceed = null,
         successLevels = null,
         didCrit = null,
         attack = null
     )
-    is CheckResult.Simple -> GenericResultDisplay(
+    is CheckResult.Simple -> GenericResultModel(
         inputs = this.inputs,
         didSucceed = this.didSucceed,
         successLevels = null,
         didCrit = this.didCrit,
         attack = null
     )
-    is CheckResult.Dramatic -> GenericResultDisplay(
+    is CheckResult.Dramatic -> GenericResultModel(
         inputs = this.inputs,
         didSucceed = this.didSucceed,
         successLevels = this.successLevels,
         didCrit = this.didCrit,
         attack = null
     )
-    is CheckResult.Opposed.Partial -> GenericResultDisplay(
+    is CheckResult.Opposed.Partial -> GenericResultModel(
         inputs = this.inputs,
         didSucceed = null,
         successLevels = this.successLevels,
         didCrit = null,
         attack = null
     )
-    is CheckResult.Opposed.Full -> GenericResultDisplay(
+    is CheckResult.Opposed.Full -> GenericResultModel(
         inputs = null,
         didSucceed = this.didSucceed,
         successLevels = this.successLevels,
         didCrit = null,
         attack = null
     )
-    is CheckResult.Combat.Partial -> GenericResultDisplay(
+    is CheckResult.Combat.Partial -> GenericResultModel(
         inputs = this.inputs,
         didSucceed = null,
         successLevels = this.successLevels,
         didCrit = null,
         attack = null
     )
-    is CheckResult.Combat.Full -> GenericResultDisplay(
+    is CheckResult.Combat.Full -> GenericResultModel(
         inputs = null,
         didSucceed = null,
         successLevels = null,

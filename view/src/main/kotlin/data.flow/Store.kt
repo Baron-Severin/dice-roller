@@ -10,13 +10,19 @@ private val initialState = State(
 
 class Store(
     private var currentState: State = initialState,
-    private val display: (State) -> Unit
+    private val display: (State, State?) -> Unit
 ) {
     fun apply(event: Event) {
+        if (event is Event.Init) {
+            display(currentState, null)
+            return
+        }
+
+        val oldState = currentState
+        log("Applying event: $event")
         currentState = reduce(currentState, event)
-        println("Applied event: $event")
-        println("New state: $currentState")
-        display(currentState)
+        log("New state: $currentState")
+        display(currentState, oldState)
     }
 }
 
@@ -26,3 +32,7 @@ data class State(
     val currentRollResults: CheckResult
     // TODO roll log
 )
+
+fun log(text: String) {
+    println("Store: $text")
+}

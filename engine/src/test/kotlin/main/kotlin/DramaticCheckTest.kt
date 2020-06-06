@@ -27,8 +27,6 @@ class DramaticCheckTest {
         nextRoll = roll
         val result = roller.dramaticCheck(threshold)
 
-        println("result: $result")
-
         assertEquals(expectedSuccess, result.didSucceed)
         assertEquals(expectedSuccessLevels, result.successLevels)
         assertEquals(expectedCrit, result.didCrit)

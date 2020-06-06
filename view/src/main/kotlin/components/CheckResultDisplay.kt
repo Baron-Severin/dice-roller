@@ -1,14 +1,14 @@
 @file:Suppress("FunctionName")
 
-package domain.objects
+package components
 
 import AttackDetails
 import CheckResult
-import GenericResultDisplay
+import domain.objects.GenericResultModel
 import kotlinx.html.*
 import kotlinx.html.dom.create
 import org.w3c.dom.HTMLElement
-import toDisplay
+import domain.objects.toDisplay
 import kotlin.browser.document
 
 fun CheckResultDisplay(result: CheckResult): HTMLElement {
@@ -26,7 +26,7 @@ fun CheckResultDisplay(result: CheckResult): HTMLElement {
 }
 
 private fun CheckResultDisplay(
-    result: GenericResultDisplay,
+    result: GenericResultModel,
     addExtraBlock: (DIV.() -> Unit)? = null
 ): HTMLElement = document.create.div {
     val spanClass = colorClass(result.didSucceed)

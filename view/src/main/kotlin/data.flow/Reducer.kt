@@ -10,6 +10,13 @@ private fun reduce(state: State, event: Event.PagerTabClicked) = state.copy(
     selectedPager = event.pager
 )
 
-private fun reduce(state: State, event: Event.RollClicked) = state.copy(
-    currentRollResults = Check.dramatic(event.firstInput!!) // TODO
-)
+private fun reduce(state: State, event: Event.RollClicked): State {
+    return if (event.firstInput != null) {
+        state.copy(
+            currentRollResults = Check.dramatic(event.firstInput) // TODO
+        )
+    } else {
+        state
+    }
+}
+
