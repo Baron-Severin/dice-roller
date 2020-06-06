@@ -1,5 +1,5 @@
 import components.CHECK_RESULT_ID
-import components.ResultDisplay
+import components.CheckResultDisplay
 import org.w3c.dom.HTMLButtonElement
 import org.w3c.dom.HTMLDivElement
 import org.w3c.dom.HTMLInputElement
@@ -18,7 +18,7 @@ fun main() {
 
             val result = Check.dramatic(threshold)
 
-            checkResultContainer.replaceWith(ResultDisplay(result))
+            checkResultContainer.replaceWith(CheckResultDisplay(result))
         })
     }
 }

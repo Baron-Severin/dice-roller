@@ -4,5 +4,9 @@
 }
 
 .color-failure {
-    color: green;
+    color: red;
+}
+
+.card {
+    outline: solid;
 }

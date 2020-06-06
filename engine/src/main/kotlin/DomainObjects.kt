@@ -14,15 +14,15 @@ sealed class AttackDetails {
 }
 
 sealed class CheckResult {
+    data class Simple(
+        val inputs: CheckInputs,
+        val didSucceed: Boolean,
+        val didCrit: Boolean
+    ) : CheckResult()
     data class Dramatic(
         val inputs: CheckInputs,
         val didSucceed: Boolean,
         val successLevels: Int,
-        val didCrit: Boolean
-    ) : CheckResult()
-    data class Simple(
-        val inputs: CheckInputs,
-        val didSucceed: Boolean,
         val didCrit: Boolean
     ) : CheckResult()
     sealed class Opposed : CheckResult() {
@@ -35,8 +35,11 @@ sealed class CheckResult {
         ) : Opposed()
         data class Full(
             val activeInputs: CheckInputs,
-            val passiveInputs: CheckInputs
-        )
+            val passiveInputs: CheckInputs,
+            val didSucceed: Boolean,
+            val successLevels: Int
+        // TODO active + passive crit
+        ) : Opposed()
     }
     sealed class Combat : CheckResult() {
         /**
