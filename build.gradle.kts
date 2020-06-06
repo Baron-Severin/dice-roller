@@ -7,7 +7,8 @@ version = "0.1-SNAPSHOT"
 
 allprojects {
     repositories {
-        maven(url = "https://dl.bintray.com/kotlin/kotlin-eap")
         mavenCentral()
+        jcenter()
+        maven(url = "https://dl.bintray.com/kotlin/kotlin-eap")
     }
 }
