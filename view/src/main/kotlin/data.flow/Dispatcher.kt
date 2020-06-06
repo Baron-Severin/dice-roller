@@ -2,9 +2,16 @@ package data.flow
 
 import domain.objects.Pager
 
-class Dispatcher {
+class Dispatcher(private val store: Store) {
+    fun dispatchInit() {
+        store.apply(Event.Init)
+    }
+
     fun dispatchPagerClicked(pager: Pager) {
-        println("Pager clicked: $pager")
-        // TODO
+        store.apply(Event.PagerTabClicked(pager))
+    }
+
+    fun dispatchRollClicked(firstInt: Int?, secondInt: Int?) {
+        store.apply(Event.RollClicked(firstInt, secondInt))
     }
 }

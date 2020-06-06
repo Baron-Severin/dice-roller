@@ -1,5 +1,8 @@
 import data.flow.Dispatcher
+import data.flow.State
+import data.flow.Store
 
-object ServiceLocator {
-    val dispatcher = Dispatcher()
+class ServiceLocator(display: (State) -> Unit) {
+    private val store = Store(display = display)
+    val dispatcher = Dispatcher(store)
 }

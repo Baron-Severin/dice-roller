@@ -12,6 +12,13 @@ data class GenericResultDisplay(
 )
 
 fun CheckResult.toDisplay(): GenericResultDisplay = when(this) {
+    is CheckResult.None -> GenericResultDisplay(
+        inputs = null,
+        didSucceed = null,
+        successLevels = null,
+        didCrit = null,
+        attack = null
+    )
     is CheckResult.Simple -> GenericResultDisplay(
         inputs = this.inputs,
         didSucceed = this.didSucceed,

@@ -5,26 +5,35 @@ sealed class AttackDetails {
     data class Miss(
         val netSuccessLevels: Int,
         val didFumble: Boolean
-    ) : AttackDetails()
+    ) : AttackDetails() {
+        override fun toString() = JSON.stringify(this)
+    }
     data class Hit(
         val location: BodyLocation,
         val netSuccessLevels: Int,
         val crit: CriticalHit?
-    ) : AttackDetails()
+    ) : AttackDetails() {
+        override fun toString() = JSON.stringify(this)
+    }
 }
 
 sealed class CheckResult {
+    object None : CheckResult()
     data class Simple(
         val inputs: CheckInputs,
         val didSucceed: Boolean,
         val didCrit: Boolean
-    ) : CheckResult()
+    ) : CheckResult() {
+        override fun toString() = JSON.stringify(this)
+    }
     data class Dramatic(
         val inputs: CheckInputs,
         val didSucceed: Boolean,
         val successLevels: Int,
         val didCrit: Boolean
-    ) : CheckResult()
+    ) : CheckResult() {
+        override fun toString() = JSON.stringify(this)
+    }
     sealed class Opposed : CheckResult() {
         /**
          * Only one character's threshold is known
@@ -32,14 +41,19 @@ sealed class CheckResult {
         data class Partial(
             val inputs: CheckInputs,
             val successLevels: Int
-        ) : Opposed()
+        ) : Opposed() {
+            override fun toString() = JSON.stringify(this)
+        }
+
         data class Full(
             val activeInputs: CheckInputs,
             val passiveInputs: CheckInputs,
             val didSucceed: Boolean,
             val successLevels: Int
         // TODO active + passive crit
-        ) : Opposed()
+        ) : Opposed() {
+            override fun toString() = JSON.stringify(this)
+        }
     }
     sealed class Combat : CheckResult() {
         /**
@@ -48,12 +62,16 @@ sealed class CheckResult {
         data class Partial(
             val inputs: CheckInputs,
             val successLevels: Int
-        ) : Combat()
+        ) : Combat() {
+            override fun toString() = JSON.stringify(this)
+        }
         data class Full(
             val attackerInputs: CheckInputs,
             val defenderInputs: CheckInputs,
             val attack: AttackDetails
-        ) : Combat()
+        ) : Combat() {
+            override fun toString() = JSON.stringify(this)
+        }
     }
 }
 
@@ -63,5 +81,6 @@ data class CriticalHit(
     val extraWounds: Int,
     val additionalEffects: String
 ) {
+    override fun toString() = JSON.stringify(this)
     companion object
 }

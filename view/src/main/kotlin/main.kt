@@ -1,28 +1,37 @@
 import components.PagerTabsDisplay
+import data.flow.Dispatcher
+import data.flow.State
 import domain.objects.CheckResultDisplay
-import domain.objects.Pager
 import org.w3c.dom.HTMLButtonElement
-import org.w3c.dom.HTMLDivElement
+import org.w3c.dom.HTMLElement
 import org.w3c.dom.HTMLInputElement
 import kotlin.browser.document
 import kotlin.browser.window
 
-val checkResultContainer get() = document.getElementById(Constants.Id.CHECK_RESULT_CONTAINER) as HTMLDivElement
-val pagerTabContainer get() = document.getElementById(Constants.Id.PAGER_TAB_CONTAINER) as HTMLDivElement
+val checkResultContainer get() = document.getElementById(Constants.Id.CHECK_RESULT_CONTAINER) as HTMLElement
+val pagerTabContainer get() = document.getElementById(Constants.Id.PAGER_TAB_CONTAINER) as HTMLElement
+
+private lateinit var dispatcher: Dispatcher
 
 fun main() {
     window.onload = {
-        pagerTabContainer.replaceWith(PagerTabsDisplay(Pager.SIMPLE_CHECK))
+        val serviceLocator = ServiceLocator(::display)
+        dispatcher = serviceLocator.dispatcher
+        dispatcher.dispatchInit()
+
 
         val thresholdInput = document.getElementById("threshold") as HTMLInputElement
         val rollButton = document.getElementById("roll") as HTMLButtonElement
 
         rollButton.addEventListener("click", { // TODO move to dispatcher
-            val threshold = thresholdInput.value.toIntOrNull() ?: return@addEventListener
+            val threshold = thresholdInput.value.toIntOrNull()
 
-            val result = Check.dramatic(threshold)
-
-            checkResultContainer.replaceWith(CheckResultDisplay(result))
+            dispatcher.dispatchRollClicked(threshold, null)
         })
     }
+}
+
+fun display(state: State) {
+    pagerTabContainer.replaceWith(PagerTabsDisplay(state.selectedPager, dispatcher))
+    checkResultContainer.replaceWith(CheckResultDisplay(state.currentRollResults))
 }
