@@ -72,12 +72,12 @@ private fun DIV.getOpposedResultDisplay(
         val activeSpanClass = colorClass(result.didSucceed)
         val passiveSpanClass = colorClass(!result.didSucceed)
         p {
-            +"Active Roll/Skill Check: ${result.activeInputs.roll}/${result.activeInputs.threshold} "
-            span(classes = activeSpanClass) { +"(${result.activeInputs.margin})" }
+            +"Active Roll/Skill Check: ${result.actorInputs.roll}/${result.actorInputs.threshold} "
+            span(classes = activeSpanClass) { +"(${result.actorInputs.margin})" }
         }
         p {
-            +"Passive Roll/Skill Check: ${result.passiveInputs.roll}/${result.passiveInputs.threshold} "
-            span(classes = passiveSpanClass) { +"(${result.passiveInputs.margin})" }
+            +"Passive Roll/Skill Check: ${result.receiverInputs.roll}/${result.receiverInputs.threshold} "
+            span(classes = passiveSpanClass) { +"(${result.receiverInputs.margin})" }
         }
         block?.invoke(this)
     }

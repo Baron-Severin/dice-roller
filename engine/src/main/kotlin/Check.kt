@@ -12,10 +12,18 @@ object Check {
     }
 
     fun opposed(actorThreshold: Int, receiverThreshold: Int?): CheckResult.Opposed {
-        throw NotImplementedError()
+        return if (receiverThreshold != null) {
+            roller.opposedCheckFull(actorThreshold, receiverThreshold)
+        } else {
+            roller.opposedCheckPartial(actorThreshold)
+        }
     }
 
     fun combat(attackerThreshold: Int, defenderThreshold: Int?): CheckResult.Combat {
-        throw NotImplementedError()
+        return if (defenderThreshold != null) {
+            roller.combatCheckFull(attackerThreshold, defenderThreshold)
+        } else {
+            roller.combatCheckPartial(attackerThreshold)
+        }
     }
 }

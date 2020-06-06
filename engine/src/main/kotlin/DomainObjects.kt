@@ -48,11 +48,12 @@ sealed class CheckResult {
         }
 
         data class Full(
-            val activeInputs: CheckInputs,
-            val passiveInputs: CheckInputs,
+            val actorInputs: CheckInputs,
+            val receiverInputs: CheckInputs,
             val didSucceed: Boolean,
-            val successLevels: Int
-        // TODO active + passive crit
+            val successLevels: Int,
+            val actorDidCrit: Boolean, // TODO bind to view
+            val receiverDidCrit: Boolean // TODO bind to view
         ) : Opposed() {
             override fun toString() = JSON.stringify(this)
         }
@@ -70,7 +71,8 @@ sealed class CheckResult {
         data class Full(
             val attackerInputs: CheckInputs,
             val defenderInputs: CheckInputs,
-            val attack: AttackDetails
+            val attack: AttackDetails,
+            val defenderCrit: CriticalHit? // TODO bind to view // TODO is this the best way to represent this?
         ) : Combat() {
             override fun toString() = JSON.stringify(this)
         }
