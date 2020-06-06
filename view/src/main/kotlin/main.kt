@@ -11,15 +11,15 @@ fun main() {
         val rollButton = document.getElementById("roll") as HTMLButtonElement
         val didSucceed = document.getElementById("didSucceed") as HTMLParagraphElement
         val successLevelsP = document.getElementById("successLevels") as HTMLParagraphElement
-        val testInputs = document.getElementById("testInputs") as HTMLParagraphElement
+        val checkInputs = document.getElementById("checkInputs") as HTMLParagraphElement
 
         rollButton.addEventListener("click", {
             val threshold = thresholdInput.value.toInt()
 
             // TODO expose TestRoller in a nicer way
-            val result = Test.dramaticTest(threshold)
+            val result = Check.dramaticCheck(threshold)
             didSucceed.innerHTML = "Did Succeed: ${wrapSuccessFail(result.didSucceed, result.didSucceed)}"
-            testInputs.innerHTML = "Roll/Skill Check: ${result.inputs.roll}/${result.inputs.threshold} (${wrapSuccessFail(result.inputs.margin, result.inputs.margin >= 0)})"
+            checkInputs.innerHTML = "Roll/Skill Check: ${result.inputs.roll}/${result.inputs.threshold} (${wrapSuccessFail(result.inputs.margin, result.inputs.margin >= 0)})"
             successLevelsP.innerHTML = "Success Levels: ${wrapSuccessFail(result.successLevels, result.successLevels >= 0)}"
         })
     }

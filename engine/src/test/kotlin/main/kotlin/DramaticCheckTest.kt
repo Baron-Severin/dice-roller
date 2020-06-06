@@ -1,20 +1,20 @@
 package main.kotlin
 
-import TestRoller
+import CheckRoller
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
-class DramaticTestTest {
+class DramaticCheckTest {
 
     private var nextRoll = 0
     private val fakeDiceRoll: () -> Int = { nextRoll }
 
-    private lateinit var roller: TestRoller
+    private lateinit var roller: CheckRoller
 
     @BeforeTest
     fun setup() {
-        roller = TestRoller(fakeDiceRoll)
+        roller = CheckRoller(fakeDiceRoll)
     }
 
     private fun testSimpleRoll(
@@ -25,7 +25,7 @@ class DramaticTestTest {
         expectedCrit: Boolean
     ) {
         nextRoll = roll
-        val result = roller.dramaticTest(threshold)
+        val result = roller.dramaticCheck(threshold)
 
         println("result: $result")
 

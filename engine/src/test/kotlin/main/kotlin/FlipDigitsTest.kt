@@ -1,12 +1,12 @@
 package main.kotlin
 
-import TestRoller
+import CheckRoller
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
 class FlipDigitsTest {
 
-    private val roller = TestRoller {0}
+    private val roller = CheckRoller {0}
 
     @Test
     fun double_digit_roll() {

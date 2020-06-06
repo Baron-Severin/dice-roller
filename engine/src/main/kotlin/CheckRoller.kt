@@ -2,18 +2,18 @@ import kotlin.math.abs
 import kotlin.math.max
 import kotlin.random.Random
 
-data class TestInputs(val roll: Int, val threshold: Int, val margin: Int)
+data class CheckInputs(val roll: Int, val threshold: Int, val margin: Int)
 
-data class DramaticTestResult(val inputs: TestInputs, val didSucceed: Boolean, val successLevels: Int, val didCrit: Boolean)
-data class SimpleTestResult(val inputs: TestInputs, val didSucceed: Boolean, val didCrit: Boolean)
+data class DramaticCheckResult(val inputs: CheckInputs, val didSucceed: Boolean, val successLevels: Int, val didCrit: Boolean)
+data class SimpleCheckResult(val inputs: CheckInputs, val didSucceed: Boolean, val didCrit: Boolean)
 
 enum class BodyLocation { HEAD, LEFT_ARM, RIGHT_ARM, BODY, LEFT_LEG, RIGHT_LEG }
 
 internal val realDiceRoll = { (Random.nextDouble() * 100).toInt() }
 
 @VisibleForTesting(otherwise = VisibleForTesting.INTERNAL)
-class TestRoller(private val d100Roll: () -> Int) {
-    fun dramaticTest(threshold: Int): DramaticTestResult {
+class CheckRoller(private val d100Roll: () -> Int) {
+    fun dramaticCheck(threshold: Int): DramaticCheckResult {
         val roll = d100Roll()
         val unmodifiedSuccessLevels = abs((roll / 10) - (threshold / 10))
 
@@ -29,12 +29,12 @@ class TestRoller(private val d100Roll: () -> Int) {
         val didCrit = roll == 100 ||
                 (roll % 10) == (roll / 10)
 
-        return DramaticTestResult(TestInputs(roll, threshold, threshold - roll), didSucceed, modifiedSL, didCrit)
+        return DramaticCheckResult(CheckInputs(roll, threshold, threshold - roll), didSucceed, modifiedSL, didCrit)
     }
 
-    fun simpleTest(threshold: Int): SimpleTestResult {
-        val dramatic = dramaticTest(threshold)
-        return SimpleTestResult(dramatic.inputs, dramatic.didSucceed, dramatic.didCrit)
+    fun simpleCheck(threshold: Int): SimpleCheckResult {
+        val dramatic = dramaticCheck(threshold)
+        return SimpleCheckResult(dramatic.inputs, dramatic.didSucceed, dramatic.didCrit)
     }
 
     @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
