@@ -16,19 +16,18 @@ fun main() {
         rollButton.addEventListener("click", {
             val threshold = thresholdInput.value.toInt()
 
-            // TODO expose TestRoller in a nicer way
-            val result = Check.dramaticCheck(threshold)
-            didSucceed.innerHTML = "Did Succeed: ${wrapSuccessFail(result.didSucceed, result.didSucceed)}"
-            checkInputs.innerHTML = "Roll/Skill Check: ${result.inputs.roll}/${result.inputs.threshold} (${wrapSuccessFail(result.inputs.margin, result.inputs.margin >= 0)})"
-            successLevelsP.innerHTML = "Success Levels: ${wrapSuccessFail(result.successLevels, result.successLevels >= 0)}"
+            val result = Check.dramatic(threshold)
+            didSucceed.innerHTML = "Did Succeed: ${colorize(result.didSucceed, result)}"
+            checkInputs.innerHTML = "Roll/Skill Check: ${result.inputs.roll}/${result.inputs.threshold} (${colorize(result.inputs.margin, result)})"
+            successLevelsP.innerHTML = "Success Levels: ${colorize(result.successLevels, result)}"
         })
     }
 }
 
-private fun wrapSuccessFail(text: Any, didSucceed: Boolean): String = wrapSuccessFail(text.toString(), didSucceed)
+private fun colorize(text: Any, result: DramaticCheckResult): String = colorize(text.toString(), result)
 
-private fun wrapSuccessFail(text: String, didSucceed: Boolean): String {
-    val color = if (didSucceed) "green" else "red"
+private fun colorize(text: String, result: DramaticCheckResult): String {
+    val color = if (result.didSucceed) "green" else "red"
     val span = "<span style='color: ${color}'>" to "</span>"
     return "${span.first}$text${span.second}"
 }
