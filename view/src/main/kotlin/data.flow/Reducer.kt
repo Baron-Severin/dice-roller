@@ -1,5 +1,7 @@
 package data.flow
 
+import domain.objects.Pager
+
 fun reduce(current: State, event: Event): State = when (event) {
     is Event.Init -> current
     is Event.PagerTabClicked -> reduce(current, event)
@@ -7,16 +9,25 @@ fun reduce(current: State, event: Event): State = when (event) {
 }
 
 private fun reduce(state: State, event: Event.PagerTabClicked) = state.copy(
-    selectedPager = event.pager
+    selectedPager = event.pager,
+    currentRollResults = CheckResult.None
 )
 
 private fun reduce(state: State, event: Event.RollClicked): State {
-    return if (event.firstInput != null) {
-        state.copy(
-            currentRollResults = Check.dramatic(event.firstInput) // TODO
-        )
+    val (actorInput, receiverInput) = if (event.firstInput == null && event.secondInput != null) {
+        event.secondInput to event.firstInput
     } else {
-        state
+        event.firstInput to event.secondInput
     }
-}
 
+    if (actorInput == null) return state
+
+    val checkResult = when (state.selectedPager) {
+        Pager.SIMPLE_CHECK -> Check.simple(actorInput)
+        Pager.DRAMATIC_CHECK -> Check.dramatic(actorInput)
+        Pager.OPPOSED_CHECK -> Check.opposed(actorInput, receiverInput)
+        Pager.COMBAT_CHECK -> Check.combat(actorInput, receiverInput)
+    }
+
+    return state.copy(currentRollResults = checkResult)
+}

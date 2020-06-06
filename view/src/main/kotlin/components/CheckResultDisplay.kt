@@ -50,12 +50,12 @@ private fun CheckResultDisplay(
                 +"Success Levels: "
                 span(classes = spanClass) { +successLevels.toString() }
             }
-            if (didCrit == true) {
-                p {
-                    // TODO had to !! didSucceed.  Revisit model
-                    val text = if (result.didSucceed!!) "Critical!" else "Fumble!"
-                    span(classes = spanClass) { +text }
-                }
+        }
+        if (didCrit == true) {
+            p {
+                // TODO had to !! didSucceed.  Revisit model
+                val text = if (result.didSucceed!!) "Critical!" else "Fumble!"
+                span(classes = spanClass) { +text }
             }
         }
         if (addExtraBlock != null) {
