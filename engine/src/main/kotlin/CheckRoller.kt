@@ -4,7 +4,14 @@ import kotlin.random.Random
 import CheckResult.Dramatic
 import CheckResult.Simple
 
-enum class BodyLocation { HEAD, LEFT_ARM, RIGHT_ARM, BODY, LEFT_LEG, RIGHT_LEG }
+enum class BodyLocation(val description: String) {
+    HEAD("Head"),
+    LEFT_ARM("Left Arm"),
+    RIGHT_ARM("Right Arm"),
+    BODY("Body"),
+    LEFT_LEG("Left Leg"),
+    RIGHT_LEG("Right Leg")
+}
 
 internal val realDiceRoll = { (Random.nextDouble() * 100).toInt() }
 
@@ -70,12 +77,51 @@ class CheckRoller(private val d100Roll: () -> Int) {
         )
     }
 
-    fun combatCheckPartial(actorThreshold: Int): CheckResult.Combat.Partial {
-        throw NotImplementedError()
+    fun combatCheckPartial(attackerThreshold: Int): CheckResult.Combat.Partial {
+        val result = dramaticCheck(attackerThreshold)
+
+        return CheckResult.Combat.Partial(
+            inputs = result.inputs,
+            successLevels = result.successLevels
+        )
     }
 
-    fun combatCheckFull(actorThreshold: Int, receiverThreshold: Int): CheckResult.Combat.Full {
-        throw NotImplementedError()
+    // TODO combat model needs to be redone. Do that before testing, or they'll all need to be rewritten
+    fun combatCheckFull(attackerThreshold: Int, defenderThreshold: Int): CheckResult.Combat.Full {
+        val opposed = opposedCheckFull(attackerThreshold, defenderThreshold)
+
+        val attack = if (opposed.didSucceed) {
+            val location = hitLocation(opposed.actorInputs.roll)
+            val crit = if (opposed.didSucceed && didCrit(opposed.actorInputs.roll)) {
+                CriticalHit.get(location, d100Roll())
+            } else {
+                null
+            }
+            AttackDetails.Hit(
+                location = location,
+                netSuccessLevels = opposed.successLevels,
+                crit = crit
+            )
+        } else {
+            AttackDetails.Miss(
+                netSuccessLevels = opposed.successLevels,
+                didFumble = didCrit(opposed.actorInputs.roll)
+            )
+        }
+
+        val defenderCrit = if (!opposed.didSucceed && didCrit(opposed.receiverInputs.roll)) {
+            val location = hitLocation(opposed.receiverInputs.roll)
+            CriticalHit.get(location, d100Roll())
+        } else {
+            null
+        }
+
+        return CheckResult.Combat.Full(
+            attackerInputs = opposed.actorInputs,
+            defenderInputs = opposed.receiverInputs,
+            attack = attack,
+            defenderCrit = defenderCrit
+        )
     }
 
     private fun didCrit(roll: Int): Boolean = roll == 100 ||

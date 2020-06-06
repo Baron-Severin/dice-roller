@@ -5,6 +5,8 @@ package main.kotlin
 import CheckRoller
 import kotlin.test.*
 
+// TODO there is a misunderstood rule here.  It should be possible to win while fumbling. Crit/fumbles should be based off your own SL, _not_ net SL
+
 class OpposedCheckFullTest {
     private val fakeDiceRoll: () -> Int = {
         assertTrue("nextRolls is empty. Did the check reroll with too few rolls provided?") {

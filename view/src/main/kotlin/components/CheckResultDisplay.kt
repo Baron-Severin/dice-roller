@@ -111,7 +111,11 @@ private fun DIV.getCombatResultDisplay(
 
         if (attack is AttackDetails.Hit) {
             p {
-                +"Hit Location: ${attack.location}"
+                span(classes = attackerSpan) { +"Hit!" }
+            }
+            p {
+                +"Hit Location: "
+                span(classes = Constants.Css.Class.COLOR_INDETERMINATE_SUCCESS) { +attack.location.description }
             }
             p {
                 +"Net Success Levels: "
@@ -130,13 +134,16 @@ private fun DIV.getCombatResultDisplay(
                         +crit.description
                     }
                     p {
-                        +"Extra Damage: ${crit.extraWounds}"
+                        +"Extra Damage: "
+                        span(classes = attackerSpan) { +crit.extraWounds }
                     }
                     p {
                         +crit.additionalEffects
                     }
                 }
             }
+        } else {
+            span(classes = attackerSpan) { +"Miss!" }
         }
         block?.invoke(this)
     }

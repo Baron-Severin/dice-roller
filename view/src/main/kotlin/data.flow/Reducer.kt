@@ -8,10 +8,18 @@ fun reduce(current: State, event: Event): State = when (event) {
     is Event.RollClicked -> reduce(current, event)
 }
 
-private fun reduce(state: State, event: Event.PagerTabClicked) = state.copy(
-    selectedPager = event.pager,
-    currentRollResults = CheckResult.None
-)
+private fun reduce(state: State, event: Event.PagerTabClicked): State {
+    val rollResults = if (state.selectedPager != event.pager) {
+        CheckResult.None
+    } else {
+        state.currentRollResults
+    }
+
+    return state.copy(
+        selectedPager = event.pager,
+        currentRollResults = rollResults
+    )
+}
 
 private fun reduce(state: State, event: Event.RollClicked): State {
     val (actorInput, receiverInput) = if (event.firstInput == null && event.secondInput != null) {

@@ -2,16 +2,16 @@
 data class CheckInputs(val roll: Int, val threshold: Int, val margin: Int)
 
 sealed class AttackDetails {
-    data class Miss(
-        val netSuccessLevels: Int,
-        val didFumble: Boolean
-    ) : AttackDetails() {
-        override fun toString() = JSON.stringify(this)
-    }
     data class Hit(
         val location: BodyLocation,
         val netSuccessLevels: Int,
         val crit: CriticalHit?
+    ) : AttackDetails() {
+        override fun toString() = JSON.stringify(this)
+    }
+    data class Miss(
+        val netSuccessLevels: Int,
+        val didFumble: Boolean
     ) : AttackDetails() {
         override fun toString() = JSON.stringify(this)
     }
@@ -40,7 +40,7 @@ sealed class CheckResult {
         /**
          * Only one character's threshold is known
          */
-        data class Partial(
+        data class Partial( // TODO should crit/fumble
             val inputs: CheckInputs,
             val successLevels: Int
         ) : Opposed() {
@@ -62,23 +62,25 @@ sealed class CheckResult {
         /**
          * Combat where only one participant's threshold is known
          */
-        data class Partial(
+        data class Partial( // TODO should crit/fumble
             val inputs: CheckInputs,
             val successLevels: Int
         ) : Combat() {
             override fun toString() = JSON.stringify(this)
         }
-        data class Full(
+        data class Full( // TODO this does not handle fumbles
             val attackerInputs: CheckInputs,
             val defenderInputs: CheckInputs,
             val attack: AttackDetails,
-            val defenderCrit: CriticalHit? // TODO bind to view // TODO is this the best way to represent this?
+            val defenderCrit: CriticalHit? // TODO bind to view // TODO is this the best way to represent this? in the model?
         ) : Combat() {
             override fun toString() = JSON.stringify(this)
         }
     }
 }
 
+// TODO add combat fumble
+// TODO combat fumble table ("oops table") on 160
 data class CriticalHit(
     val roll: Int,
     val description: String,
