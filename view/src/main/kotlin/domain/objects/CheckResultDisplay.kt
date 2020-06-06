@@ -1,6 +1,6 @@
 @file:Suppress("FunctionName")
 
-package components
+package domain.objects
 
 import AttackDetails
 import CheckResult
@@ -10,8 +10,6 @@ import kotlinx.html.dom.create
 import org.w3c.dom.HTMLElement
 import toDisplay
 import kotlin.browser.document
-
-const val CHECK_RESULT_ID = "CHECK_RESULT_ID"
 
 fun CheckResultDisplay(result: CheckResult): HTMLElement {
     val extraBlock: (DIV.() -> Unit)? = when (result) {
@@ -33,7 +31,7 @@ private fun CheckResultDisplay(
 ): HTMLElement = document.create.div {
     val spanClass = colorClass(result.didSucceed)
 
-    id = CHECK_RESULT_ID
+    id = Constants.Id.CHECK_RESULT_CONTAINER
     with (result) {
         didSucceed?.let { didSucceed ->
             p {
@@ -70,7 +68,7 @@ private fun DIV.getOpposedResultDisplay(
     result: CheckResult.Opposed.Full,
     block: (DIV.() -> Unit)? = null
 ) {
-    div(classes = Constants.CSS.Class.CARD) {
+    div(classes = Constants.Css.Class.CARD) {
         val activeSpanClass = colorClass(result.didSucceed)
         val passiveSpanClass = colorClass(!result.didSucceed)
         p {
@@ -89,7 +87,7 @@ private fun DIV.getCombatResultDisplay(
     result: CheckResult.Combat.Full,
     block: (DIV.() -> Unit)? = null
 ) {
-    div(classes = Constants.CSS.Class.CARD) {
+    div(classes = Constants.Css.Class.CARD) {
         val attack = result.attack
         val attackerSpan = colorClass(attack is AttackDetails.Hit)
         val defenderSpan = colorClass(attack is AttackDetails.Miss)
@@ -112,7 +110,7 @@ private fun DIV.getCombatResultDisplay(
             }
             val crit = attack.crit
             if (crit != null) {
-                div(classes = Constants.CSS.Class.CARD) {
+                div(classes = Constants.Css.Class.CARD) {
                     p {
                         span(classes = attackerSpan) { +"Critical hit!" }
                     }
@@ -136,7 +134,7 @@ private fun DIV.getCombatResultDisplay(
 }
 
 private fun colorClass(didSucceed: Boolean?): String = when (didSucceed) {
-    null -> Constants.CSS.Class.NONE
-    true -> Constants.CSS.Class.COLOR_SUCCESS
-    false -> Constants.CSS.Class.COLOR_FAILURE
+    null -> Constants.Css.Class.NONE
+    true -> Constants.Css.Class.COLOR_SUCCESS
+    false -> Constants.Css.Class.COLOR_FAILURE
 }

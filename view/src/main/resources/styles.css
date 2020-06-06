@@ -10,3 +10,20 @@
 .card {
     outline: solid;
 }
+
+.pager-tab {
+    outline: 1px solid black;
+    display: inline-block;
+    padding: 5px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    cursor: pointer;
+}
+
+.pager-tab p {
+    margin: 0px;
+}
+
+.pager-tab-active {
+    outline: 2px solid blue;
+}
