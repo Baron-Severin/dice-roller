@@ -7,8 +7,13 @@
     color: red;
 }
 
+.color-indeterminate-success {
+    color: orange;
+}
+
 .card {
     outline: solid;
+    padding: 5px;
 }
 
 .pager-tab {

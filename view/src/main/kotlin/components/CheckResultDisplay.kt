@@ -68,16 +68,25 @@ private fun DIV.getOpposedResultDisplay(
     result: CheckResult.Opposed.Full,
     block: (DIV.() -> Unit)? = null
 ) {
-    div(classes = Constants.Css.Class.CARD) {
-        val activeSpanClass = colorClass(result.didSucceed)
-        val passiveSpanClass = colorClass(!result.didSucceed)
+    div {
+        val actorSpanClass = colorClass(result.didSucceed)
+        val receiverSpanClass = colorClass(!result.didSucceed)
         p {
-            +"Active Roll/Skill Check: ${result.actorInputs.roll}/${result.actorInputs.threshold} "
-            span(classes = activeSpanClass) { +"(${result.actorInputs.margin})" }
+            +"Actor Roll/Skill Check: ${result.actorInputs.roll}/${result.actorInputs.threshold} "
+            span(classes = actorSpanClass) { +"(${result.actorInputs.margin})" }
+        }
+        if (result.actorDidCrit) {
+            // TODO view probably shouldnt be calculating this
+            val text = if (result.didSucceed) "Actor critical!" else "Actor fumble!"
+            span(classes = actorSpanClass) { +text }
         }
         p {
-            +"Passive Roll/Skill Check: ${result.receiverInputs.roll}/${result.receiverInputs.threshold} "
-            span(classes = passiveSpanClass) { +"(${result.receiverInputs.margin})" }
+            +"Receiver Roll/Skill Check: ${result.receiverInputs.roll}/${result.receiverInputs.threshold} "
+            span(classes = receiverSpanClass) { +"(${result.receiverInputs.margin})" }
+        }
+        if (result.receiverDidCrit) {
+            val text = if (result.didSucceed) "Receiver critical!" else "Receiver fumble!"
+            span(classes = actorSpanClass) { +text }
         }
         block?.invoke(this)
     }
@@ -134,7 +143,7 @@ private fun DIV.getCombatResultDisplay(
 }
 
 private fun colorClass(didSucceed: Boolean?): String = when (didSucceed) {
-    null -> Constants.Css.Class.NONE
+    null -> Constants.Css.Class.COLOR_INDETERMINATE_SUCCESS
     true -> Constants.Css.Class.COLOR_SUCCESS
     false -> Constants.Css.Class.COLOR_FAILURE
 }

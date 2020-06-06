@@ -52,8 +52,8 @@ sealed class CheckResult {
             val receiverInputs: CheckInputs,
             val didSucceed: Boolean,
             val successLevels: Int,
-            val actorDidCrit: Boolean, // TODO bind to view
-            val receiverDidCrit: Boolean // TODO bind to view
+            val actorDidCrit: Boolean,
+            val receiverDidCrit: Boolean
         ) : Opposed() {
             override fun toString() = JSON.stringify(this)
         }

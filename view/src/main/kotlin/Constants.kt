@@ -11,6 +11,7 @@ object Constants {
     object Css {
         object Class {
             const val NONE = ""
+            const val COLOR_INDETERMINATE_SUCCESS = "color-indeterminate-success"
             const val COLOR_SUCCESS = "color-success"
             const val COLOR_FAILURE = "color-failure"
             const val CARD = "card"
