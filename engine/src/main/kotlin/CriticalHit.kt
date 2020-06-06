@@ -1,24 +1,15 @@
 
-data class CriticalHit(
-    val location: BodyLocation,
-    val description: String,
-    val wounds: Int,
-    val additionalEffects: String
-) {
-    companion object {
-        fun get(location: BodyLocation, critRoll: Int): CriticalHit {
-            fun List<CritData>.find(critRoll: Int) = this.first { critRoll in it.roll }
+fun CriticalHit.Companion.get(location: BodyLocation, critRoll: Int): CriticalHit {
+    fun List<CritData>.find(critRoll: Int) = this.first { critRoll in it.roll }
 
-            val record = when(location) {
-                BodyLocation.HEAD -> head.find(critRoll)
-                BodyLocation.LEFT_ARM, BodyLocation.RIGHT_ARM -> arm.find(critRoll)
-                BodyLocation.LEFT_LEG, BodyLocation.RIGHT_LEG -> leg.find(critRoll)
-                BodyLocation.BODY -> body.find(critRoll)
-            }
-
-            return CriticalHit(location, record.description, record.wounds, record.additionalEffects)
-        }
+    val record = when(location) {
+        BodyLocation.HEAD -> head.find(critRoll)
+        BodyLocation.LEFT_ARM, BodyLocation.RIGHT_ARM -> arm.find(critRoll)
+        BodyLocation.LEFT_LEG, BodyLocation.RIGHT_LEG -> leg.find(critRoll)
+        BodyLocation.BODY -> body.find(critRoll)
     }
+
+    return CriticalHit(critRoll, record.description, record.wounds, record.additionalEffects)
 }
 
 private data class CritData(

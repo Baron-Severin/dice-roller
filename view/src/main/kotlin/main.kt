@@ -24,9 +24,9 @@ fun main() {
     }
 }
 
-private fun colorize(text: Any, result: DramaticCheckResult): String = colorize(text.toString(), result)
+private fun colorize(text: Any, result: CheckResult.Dramatic): String = colorize(text.toString(), result)
 
-private fun colorize(text: String, result: DramaticCheckResult): String {
+private fun colorize(text: String, result: CheckResult.Dramatic): String {
     val color = if (result.didSucceed) "green" else "red"
     val span = "<span style='color: ${color}'>" to "</span>"
     return "${span.first}$text${span.second}"

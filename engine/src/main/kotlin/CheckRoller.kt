@@ -1,11 +1,8 @@
 import kotlin.math.abs
 import kotlin.math.max
 import kotlin.random.Random
-
-data class CheckInputs(val roll: Int, val threshold: Int, val margin: Int)
-
-data class DramaticCheckResult(val inputs: CheckInputs, val didSucceed: Boolean, val successLevels: Int, val didCrit: Boolean)
-data class SimpleCheckResult(val inputs: CheckInputs, val didSucceed: Boolean, val didCrit: Boolean)
+import CheckResult.Dramatic
+import CheckResult.Simple
 
 enum class BodyLocation { HEAD, LEFT_ARM, RIGHT_ARM, BODY, LEFT_LEG, RIGHT_LEG }
 
@@ -13,7 +10,7 @@ internal val realDiceRoll = { (Random.nextDouble() * 100).toInt() }
 
 @VisibleForTesting(otherwise = VisibleForTesting.INTERNAL)
 class CheckRoller(private val d100Roll: () -> Int) {
-    fun dramaticCheck(threshold: Int): DramaticCheckResult {
+    fun dramaticCheck(threshold: Int): Dramatic {
         val roll = d100Roll()
         val unmodifiedSuccessLevels = abs((roll / 10) - (threshold / 10))
 
@@ -29,12 +26,12 @@ class CheckRoller(private val d100Roll: () -> Int) {
         val didCrit = roll == 100 ||
                 (roll % 10) == (roll / 10)
 
-        return DramaticCheckResult(CheckInputs(roll, threshold, threshold - roll), didSucceed, modifiedSL, didCrit)
+        return Dramatic(CheckInputs(roll, threshold, threshold - roll), didSucceed, modifiedSL, didCrit)
     }
 
-    fun simpleCheck(threshold: Int): SimpleCheckResult {
+    fun simpleCheck(threshold: Int): Simple {
         val dramatic = dramaticCheck(threshold)
-        return SimpleCheckResult(dramatic.inputs, dramatic.didSucceed, dramatic.didCrit)
+        return Simple(dramatic.inputs, dramatic.didSucceed, dramatic.didCrit)
     }
 
     @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
