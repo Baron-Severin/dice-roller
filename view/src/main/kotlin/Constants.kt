@@ -5,8 +5,8 @@ object Constants {
         const val INPUT_CONTAINER = "INPUT_CONTAINER"
         const val CHECK_RESULT_CONTAINER = "CHECK_RESULT_CONTAINER"
 
-        const val ACTOR_INPUT_ID = "FIRST_INPUT_ID"
-        const val RECEIVER_INPUT_ID = "SECOND_INPUT_ID"
+        const val ACTOR_INPUT_ID = "ACTOR_INPUT_ID"
+        const val RECEIVER_INPUT_ID = "RECEIVER_INPUT_ID"
     }
     object Css {
         object Class {

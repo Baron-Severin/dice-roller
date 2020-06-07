@@ -5,7 +5,6 @@ package components
 import data.flow.Dispatcher
 import domain.objects.Pager
 import kotlinx.html.*
-import kotlinx.html.div
 import kotlinx.html.dom.create
 import kotlinx.html.js.*
 import org.w3c.dom.HTMLElement
