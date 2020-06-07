@@ -4,6 +4,7 @@ package components
 
 import AttackDetails
 import CheckResult
+import CombatCrit
 import domain.objects.GenericResultModel
 import kotlinx.html.*
 import kotlinx.html.dom.create
@@ -109,50 +110,61 @@ private fun DIV.getCombatResultDisplay(
             span(classes = defenderSpan) { +result.defenderInputs.margin.toString() }
         }
 
-        if (attack is AttackDetails.Hit) {
+        div(classes = Constants.Css.Class.CARD) {
             p {
-                span(classes = attackerSpan) { +"Hit!" }
-            }
-            p {
-                +"Hit Location: "
-                span(classes = Constants.Css.Class.COLOR_INDETERMINATE_SUCCESS) { +attack.location.description }
+                span(classes = attackerSpan) { +attack.description() }
             }
             p {
                 +"Net Success Levels: "
                 span(classes = attackerSpan) { +attack.netSuccessLevels.toString() }
             }
-            val crit = attack.crit
-            if (crit != null) {
-                div(classes = Constants.Css.Class.CARD) {
-                    p {
-                        val (text, spanClass) = when (crit) {
-                            is CombatCrit.Hit -> "Critical Hit!" to attackerSpan
-                            is CombatCrit.Fumble -> "Fumble!" to defenderSpan
-                        }
-                        span(classes = spanClass) { +text }
-                    }
-                    p {
-                        +"Crit Roll: ${crit.roll}"
-                    }
-                    if (crit is CombatCrit.Hit) { // Will be on Fumble after oops is implemented
-                        p {
-
-                            +crit.description
-                        }
-                        p {
-                            +"Extra Damage: "
-                            span(classes = attackerSpan) { +crit.extraWounds }
-                        }
-                        p {
-                            +crit.additionalEffects
-                        }
-                    }
+            if (attack is AttackDetails.Hit) {
+                p {
+                    +"Hit Location: "
+                    span(classes = Constants.Css.Class.COLOR_INDETERMINATE_SUCCESS) { +attack.location.description }
                 }
             }
-        } else {
-            span(classes = attackerSpan) { +"Miss!" }
+            getCritCard(true, attack.crit)
         }
+        getCritCard(false, result.defenderCrit)
         block?.invoke(this)
+    }
+}
+
+fun DIV.getCritCard(isAttacker: Boolean, crit: CombatCrit?) {
+    if (crit == null) return
+
+    div(classes = Constants.Css.Class.CARD) {
+        val (goodSpan, badSpan, participant) = if (isAttacker) {
+            Triple(colorClass(true), colorClass(false), "Attacker")
+        } else {
+            Triple(colorClass(false), colorClass(true), "Defender")
+        }
+
+        p {
+            val (text, spanClass) = when (crit) {
+                is CombatCrit.Hit -> "$participant Critical Hit!" to goodSpan
+                is CombatCrit.Fumble -> "$participant Fumble!" to badSpan
+            }
+            span(classes = spanClass) { +text }
+        }
+        p {
+            +"Crit Roll: "
+            span(colorClass(null)) { +crit.roll.toString() }
+        }
+        if (crit is CombatCrit.Hit) { // Will be on Fumble after oops is implemented
+            p {
+
+                +crit.description
+            }
+            p {
+                +"Extra Damage: "
+                span(classes = goodSpan) { +crit.extraWounds }
+            }
+            p {
+                +crit.additionalEffects
+            }
+        }
     }
 }
 

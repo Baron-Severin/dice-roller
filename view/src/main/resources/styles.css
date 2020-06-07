@@ -13,7 +13,7 @@
 
 .card {
     outline: solid;
-    padding: 5px;
+    padding: 4px;
 }
 
 .pager-tab {
@@ -31,4 +31,8 @@
 
 .pager-tab-active {
     outline: 2px solid blue;
+}
+
+input {
+    margin-bottom: 4px;
 }
