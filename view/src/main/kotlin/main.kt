@@ -9,9 +9,12 @@ import org.w3c.dom.HTMLInputElement
 import kotlin.browser.document
 import kotlin.browser.window
 
-val checkResultContainer get() = document.getElementById(Constants.Id.CHECK_RESULT_CONTAINER) as HTMLElement
-val inputContainer get() = document.getElementById(Constants.Id.INPUT_CONTAINER) as HTMLElement
-val pagerTabContainer get() = document.getElementById(Constants.Id.PAGER_TAB_CONTAINER) as HTMLElement
+private fun get(id: String): HTMLElement = document.getElementById(id) as HTMLElement
+
+val checkResultContainer get() = get(Constants.Id.CHECK_RESULT_CONTAINER)
+val inputContainer get() = get(Constants.Id.INPUT_CONTAINER)
+val pagerTabContainer get() = get(Constants.Id.PAGER_TAB_CONTAINER)
+val actorInput get() = get(Constants.Id.ACTOR_INPUT_ID)
 
 private lateinit var dispatcher: Dispatcher
 
@@ -20,16 +23,6 @@ fun main() {
         val serviceLocator = ServiceLocator(::display)
         dispatcher = serviceLocator.dispatcher
         dispatcher.dispatchInit()
-
-
-//        val thresholdInput = document.getElementById("threshold") as HTMLInputElement
-//        val rollButton = document.getElementById("roll") as HTMLButtonElement
-//
-//        rollButton.addEventListener("click", { // TODO move to dispatcher
-//            val threshold = thresholdInput.value.toIntOrNull()
-//
-//            dispatcher.dispatchRollClicked(threshold, null)
-//        })
     }
 }
 
@@ -37,6 +30,7 @@ fun display(state: State, previousState: State?) {
     if (state.selectedPager != previousState?.selectedPager) {
         pagerTabContainer.replaceWith(PagerTabsDisplay(state.selectedPager, dispatcher))
         inputContainer.replaceWith(InputDisplay(state.selectedPager, dispatcher))
+        actorInput.focus()
     }
     if (state.currentRollResults != previousState?.currentRollResults) {
         checkResultContainer.replaceWith(CheckResultDisplay(state.currentRollResults))

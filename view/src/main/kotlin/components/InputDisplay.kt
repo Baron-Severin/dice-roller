@@ -22,22 +22,24 @@ private fun sharedElements(
     firstInt: () -> Int?,
     secondInt: () -> Int?,
     dispatcher: Dispatcher,
-    addInputs: DIV.() -> Unit
-): HTMLElement = document.create.div {
+    addInputs: FORM.() -> Unit
+): HTMLElement = document.create.form {
     id = Constants.Id.INPUT_CONTAINER
 
     addInputs()
 
-    button {
+    button(type = ButtonType.submit) {
         +"Roll"
-        onClickFunction = {
+        onClickFunction = { event ->
             dispatcher.dispatchRollClicked(firstInt(), secondInt())
+            // Do not refresh
+            event.preventDefault()
         }
     }
 }
 
 private fun singleInput(dispatcher: Dispatcher): HTMLElement {
-    val input: DIV.() -> Unit = {
+    val input: FORM.() -> Unit = {
         input(type = InputType.number) {
             id = Constants.Id.ACTOR_INPUT_ID
             placeholder = "Difficulty"
@@ -53,7 +55,7 @@ private fun singleInput(dispatcher: Dispatcher): HTMLElement {
 }
 
 private fun opposedInput(dispatcher: Dispatcher): HTMLElement {
-    val opposedBlock: DIV.() -> Unit = {
+    val opposedBlock: FORM.() -> Unit = {
         input(type = InputType.number) {
             id = Constants.Id.ACTOR_INPUT_ID
             placeholder = "Actor Difficulty"
@@ -73,7 +75,7 @@ private fun opposedInput(dispatcher: Dispatcher): HTMLElement {
 }
 
 private fun combatInput(dispatcher: Dispatcher): HTMLElement {
-    val combatBlock: DIV.() -> Unit = {
+    val combatBlock: FORM.() -> Unit = {
         input(type = InputType.number) {
             id = Constants.Id.ACTOR_INPUT_ID
             placeholder = "Attacker Difficulty"
