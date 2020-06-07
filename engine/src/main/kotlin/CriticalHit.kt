@@ -132,7 +132,13 @@ private val head = listOf(
         roll = 97..99,
         description = "Mangled Jaw",
         wounds = 5,
-        additionalEffects = "The blow almost removes your jaw as it utterly destroys your tongue, sending teeth flying in a shower of blood. Gain 4 Bleeding and 3 Stunned Conditions. Make a Very Hard (–30) Endurance Test or gain an Unconscious Condition. Suffer a Broken Bone (Major) injury and lose your tongue and 1d10 teeth — Amputation (Hard). 00DecapitatedDeathYour head is entirely severed from your neck and soars through the air, landing 1d10 feet away in a random direction (see Scatter). Your body collapses, instantly dead."
+        additionalEffects = "The blow almost removes your jaw as it utterly destroys your tongue, sending teeth flying in a shower of blood. Gain 4 Bleeding and 3 Stunned Conditions. Make a Very Hard (–30) Endurance Test or gain an Unconscious Condition. Suffer a Broken Bone (Major) injury and lose your tongue and 1d10 teeth — Amputation (Hard)."
+    ),
+    CritData(
+        roll = 100..100,
+        description = "Decapitated",
+        wounds = Int.MAX_VALUE,
+        additionalEffects = "Your head is entirely severed from your neck and soars through the air, landing 1d10 feet away in a random direction (see Scatter). Your body collapses, instantly dead."
     )
 )
 
@@ -249,7 +255,13 @@ private val arm = listOf(
         roll = 97..99,
         description = "Sliced Tendons",
         wounds = 5,
-        additionalEffects = "Your tendons are cut by the blow, leaving your arm hanging useless — Amputation (Very Hard). Gain 3 Bleeding, 1 Prone, and 1 Stunned Condition. Pass a Hard (–20) Endurance Test or gain the Unconscious Condition.00Brutal DismembermentDeathYour arm is severed, spraying arterial blood 1d10 feet in a random direction (see Scatter), before the blow follows through to your chest."
+        additionalEffects = "Your tendons are cut by the blow, leaving your arm hanging useless — Amputation (Very Hard). Gain 3 Bleeding, 1 Prone, and 1 Stunned Condition. Pass a Hard (–20) Endurance Test or gain the Unconscious Condition."
+    ),
+    CritData(
+        roll  = 100..100,
+        description = "Brutal Dismemberment",
+        wounds = Int.MAX_VALUE,
+        additionalEffects = "Your arm is severed, spraying arterial blood 1d10 feet in a random direction (see Scatter), before the blow follows through to your chest."
     )
 )
 
@@ -366,7 +378,13 @@ private val body = listOf(
         roll = 97..99,
         description = "Internal bleeding",
         wounds = 5,
-        additionalEffects = "Gain a Bleeding Condition that can only be removed through Surgery. Contract Blood Rot (see Disease and Infection). 00Torn ApartDeathYou are hacked in two. The top half lands in a random direction, and all characters within 2 yards are showered in blood."
+        additionalEffects = "Gain a Bleeding Condition that can only be removed through Surgery. Contract Blood Rot (see Disease and Infection)."
+    ),
+    CritData(
+        roll = 100..100,
+        description = "Torn Apart",
+        wounds = Int.MAX_VALUE,
+        additionalEffects = "You are hacked in two. The top half lands in a random direction, and all characters within 2 yards are showered in blood."
     )
 )
 
@@ -483,6 +501,12 @@ private val leg = listOf(
         roll = 97..99,
         description = "Cut Tendon",
         wounds = 5,
-        additionalEffects = "A major tendon at the back of your leg is cut, causing you to scream out in pain as your leg collapses. Gain 2 Bleeding, 2 Stunned, and 1 Prone Condition and look on in horror as your leg never works again — Amputation (Very Hard).00Shattered PelvisDeathThe blow shatters your pelvis, severing one leg then driving through to the next. You die instantly from traumatic shock."
+        additionalEffects = "A major tendon at the back of your leg is cut, causing you to scream out in pain as your leg collapses. Gain 2 Bleeding, 2 Stunned, and 1 Prone Condition and look on in horror as your leg never works again — Amputation (Very Hard)."
+    ),
+    CritData(
+        roll = 100..100,
+        description = "Shattered Pelvis",
+        wounds = Int.MAX_VALUE,
+        additionalEffects = "The blow shatters your pelvis, severing one leg then driving through to the next. You die instantly from traumatic shock."
     )
 )

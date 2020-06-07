@@ -160,12 +160,12 @@ fun DIV.getCritCard(isAttacker: Boolean, crit: CombatCrit?) {
         }
         if (crit is CombatCrit.Hit) {
             p {
-
                 +crit.description
             }
             p {
                 +"Extra Damage: "
-                span(classes = goodSpan) { +crit.extraWounds }
+                val extraWounds = if (crit.extraWounds == Int.MAX_VALUE) "Death" else crit.extraWounds.toString()
+                span(classes = goodSpan) { +extraWounds }
             }
         }
         p {
