@@ -27,9 +27,18 @@ object HtmlHacks {
                 input.value = (value + modifier).toString()
                 e.preventDefault()
             }
+
+            if (
+                // Prevent refresh
+                e.isEnter()
+            ) {
+                rollButton.click()
+                e.preventDefault()
+            }
         }
     }
 }
 
 private fun KeyboardEvent.isKeyUp() = this.code == "ArrowUp"
 private fun KeyboardEvent.isKeyDown() = this.code == "ArrowDown"
+private fun KeyboardEvent.isEnter() = this.code == "Enter"

@@ -23,16 +23,25 @@ fun CheckResultDisplay(result: CheckResult): HTMLElement {
         else -> null
     }
 
-    return CheckResultDisplay(result.toDisplay(), extraBlock)
+    return if (result is CheckResult.None) {
+        EmptyCaseDisplay()
+    } else {
+        CheckResultDisplay(result.toDisplay(), extraBlock)
+    }
+}
+
+private fun EmptyCaseDisplay(): HTMLElement = document.create.div {
+    id = Constants.Id.CHECK_RESULT_CONTAINER
+    // TODO should there be some explanation text here?
 }
 
 private fun CheckResultDisplay(
     result: GenericResultModel,
     addExtraBlock: (DIV.() -> Unit)? = null
-): HTMLElement = document.create.div {
-    val spanClass = colorClass(result.didSucceed)
-
+): HTMLElement = document.create.div(classes = Constants.Css.Class.CARD) {
     id = Constants.Id.CHECK_RESULT_CONTAINER
+
+    val spanClass = colorClass(result.didSucceed)
     with (result) {
         didSucceed?.let { didSucceed ->
             p {

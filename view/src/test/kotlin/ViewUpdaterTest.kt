@@ -20,31 +20,71 @@ class ViewUpdaterTest {
                     Tree(6)
                 )
             ) to
+                    Tree(1,
+                        Tree(2,
+                            Tree(3), Tree(4)
+                        ),
+                        Tree(5,
+                            Tree(7)
+                        )
+                    )
+        test(items, true)
+    }
+
+    @Test
+    fun case2() {
+        val items =
             Tree(1,
                 Tree(2,
                     Tree(3), Tree(4)
                 ),
                 Tree(5,
-                    Tree(7)
+                    Tree(6)
+                )
+            ) to
+            Tree(1,
+                Tree(2,
+                    Tree(3), Tree(4)
+                ),
+                Tree(5)
+            )
+        test(items, true)
+    }
+
+    @Test
+    fun case3() {
+        val items =
+            Tree(1,
+                Tree(2,
+                    Tree(3), Tree(4)
+                ),
+                Tree(5)
+            ) to
+            Tree(1,
+                Tree(2,
+                    Tree(3), Tree(4)
+                ),
+                Tree(5,
+                    Tree(6)
                 )
             )
         test(items, true)
     }
 
     @Test
-    fun case2() {
+    fun case4() {
         val items = Tree(1) to Tree(2)
         test(items, true)
     }
 
     @Test
-    fun case3() {
+    fun case5() {
         val items = Tree(1) to Tree(1)
         test(items, false)
     }
 
     @Test
-    fun case4() {
+    fun case6() {
         val items =
             Tree(1,
                 Tree(2,
