@@ -58,10 +58,10 @@ class CombatCheckFullTest {
     @Test
     fun both_chars_can_crit_or_fumble_simultaneously() {
         setNextRolls(33, 55, 5, 5)
-        val result = roller.combatCheckFull(45, 72)
+        val result = roller.combatCheckFull(45, 45)
         
-        assertNotNull(result.attack.crit != null)
-        assertNotNull(result.defenderCrit != null)
+        assertNotNull(result.attack.crit)
+        assertNotNull(result.defenderCrit)
     }
     
     @Test 
@@ -75,13 +75,20 @@ class CombatCheckFullTest {
     }
     
     @Test
-    fun actor_can_miss_and_crit_simultaneously() {
+    fun GIVEN_actor_did_miss_WHEN_actor_rolls_double_THEN_there_should_be_no_crit() {
         setNextRolls(99, 11, 5, 5)
-        val result = roller.combatCheckFull(50, 50)
+        var result = roller.combatCheckFull(50, 50)
 
         assertTrue { result.attack is AttackDetails.Miss }
         assertTrue { result.attack.crit is CombatCrit.Fumble }
         assertTrue { result.defenderCrit is CombatCrit.Hit }
+
+        setNextRolls(11, 99, 5, 5)
+        result = roller.combatCheckFull(50, 50)
+
+        assertTrue { result.attack is AttackDetails.Hit }
+        assertTrue { result.attack.crit is CombatCrit.Hit }
+        assertTrue { result.defenderCrit is CombatCrit.Fumble }
     }
 
     @Test
@@ -106,7 +113,7 @@ class CombatCheckFullTest {
     
     @Test
     fun crit_roll_should_be_unrelated_to_hit_roll() {
-        setNextRolls(11, 2, 3)
+        setNextRolls(11, 90, 3)
         val result = roller.combatCheckFull(50, 50)
 
         assertEquals(11, result.attackerInputs.roll)

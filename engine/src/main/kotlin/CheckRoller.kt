@@ -91,15 +91,19 @@ class CheckRoller(private val d100Roll: () -> Int) {
     fun combatCheckFull(attackerThreshold: Int, defenderThreshold: Int): CheckResult.Combat.Full {
         val opposed = opposedCheckFull(attackerThreshold, defenderThreshold)
 
-        fun getCrit(inputs: CheckInputs): CombatCrit? {
-            if (!didCrit(inputs.roll)) return null
+        fun getCrit(inputs: CheckInputs, isDefense: Boolean): CombatCrit? {
+            if (!didCrit(inputs.roll)) {
+                return null
+            }
 
-            return if (inputs.margin >= 0) {
+            return if (inputs.margin >= 0 && (isDefense || opposed.didSucceed)) {
                 val location = hitLocation(inputs.roll)
                 CombatCrit.Hit.get(location, d100Roll())
-            } else {
+            } else if (inputs.margin < 0) {
                 d100Roll() // TODO this will be used to roll on oops table. Makes tests work as expected
                 CombatCrit.Fumble(inputs.roll)
+            } else {
+                null
             }
         }
 
@@ -107,15 +111,15 @@ class CheckRoller(private val d100Roll: () -> Int) {
             AttackDetails.Hit(
                 location = hitLocation(opposed.actorInputs.roll),
                 netSuccessLevels = opposed.netSuccessLevels,
-                crit = getCrit(opposed.actorInputs)
+                crit = getCrit(opposed.actorInputs, false)
             )
         } else {
             AttackDetails.Miss(
                 netSuccessLevels = opposed.netSuccessLevels,
-                crit = getCrit(opposed.actorInputs)
+                crit = getCrit(opposed.actorInputs, false)
             )
         }
-        val defenderCrit = getCrit(opposed.receiverInputs)
+        val defenderCrit = getCrit(opposed.receiverInputs, true)
 
         return CheckResult.Combat.Full(
             attackerInputs = opposed.actorInputs,
