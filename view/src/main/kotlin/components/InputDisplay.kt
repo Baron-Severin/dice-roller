@@ -39,7 +39,7 @@ private fun sharedElements(
 private fun singleInput(dispatcher: Dispatcher): HTMLElement {
     val input: DIV.() -> Unit = {
         input(type = InputType.number) {
-            id = Constants.Id.FIRST_INPUT_ID
+            id = Constants.Id.ACTOR_INPUT_ID
             placeholder = "Difficulty"
         }
     }
@@ -55,11 +55,11 @@ private fun singleInput(dispatcher: Dispatcher): HTMLElement {
 private fun opposedInput(dispatcher: Dispatcher): HTMLElement {
     val opposedBlock: DIV.() -> Unit = {
         input(type = InputType.number) {
-            id = Constants.Id.FIRST_INPUT_ID
+            id = Constants.Id.ACTOR_INPUT_ID
             placeholder = "Actor Difficulty"
         }
         input(type = InputType.number) {
-            id = Constants.Id.SECOND_INPUT_ID
+            id = Constants.Id.RECEIVER_INPUT_ID
             placeholder = "Receiver Difficulty"
         }
     }
@@ -75,11 +75,11 @@ private fun opposedInput(dispatcher: Dispatcher): HTMLElement {
 private fun combatInput(dispatcher: Dispatcher): HTMLElement {
     val combatBlock: DIV.() -> Unit = {
         input(type = InputType.number) {
-            id = Constants.Id.FIRST_INPUT_ID
+            id = Constants.Id.ACTOR_INPUT_ID
             placeholder = "Attacker Difficulty"
         }
         input(type = InputType.number) {
-            id = Constants.Id.SECOND_INPUT_ID
+            id = Constants.Id.RECEIVER_INPUT_ID
             placeholder = "Defender Difficulty"
         }
     }
@@ -93,9 +93,9 @@ private fun combatInput(dispatcher: Dispatcher): HTMLElement {
 }
 
 // Workaround for unimplemented onFocus and onChange listeners
-private fun getFirstInputValue(): Int? = (document.getElementById(Constants.Id.FIRST_INPUT_ID) as HTMLInputElement?)
+private fun getFirstInputValue(): Int? = (document.getElementById(Constants.Id.ACTOR_INPUT_ID) as HTMLInputElement?)
     ?.value?.toIntOrNull()
 
 // Workaround for unimplemented onFocus and onChange listeners
-private fun getSecondInputValue(): Int? = (document.getElementById(Constants.Id.SECOND_INPUT_ID) as HTMLInputElement?)
+private fun getSecondInputValue(): Int? = (document.getElementById(Constants.Id.RECEIVER_INPUT_ID) as HTMLInputElement?)
     ?.value?.toIntOrNull()

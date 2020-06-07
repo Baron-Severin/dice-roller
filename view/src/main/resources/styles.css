@@ -32,7 +32,3 @@
 .pager-tab-active {
     outline: 2px solid blue;
 }
-
-input {
-    min: 1;
-}

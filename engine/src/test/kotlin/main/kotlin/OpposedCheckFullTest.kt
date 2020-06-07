@@ -72,7 +72,7 @@ class OpposedCheckFullTest {
 
         with (result) {
             assertTrue(didSucceed)
-            assertEquals(2, successLevels)
+            assertEquals(2, netSuccessLevels)
         }
     }
 
@@ -83,7 +83,7 @@ class OpposedCheckFullTest {
 
         with (result) {
             assertFalse(didSucceed)
-            assertEquals(-2, successLevels)
+            assertEquals(-2, netSuccessLevels)
         }
     }
 
@@ -94,7 +94,7 @@ class OpposedCheckFullTest {
 
         with (actorWins) {
             assertTrue(didSucceed)
-            assertEquals(2, successLevels)
+            assertEquals(2, netSuccessLevels)
         }
 
         setNextRolls(90, 90)
@@ -102,7 +102,7 @@ class OpposedCheckFullTest {
 
         with (receiverWins) {
             assertFalse(didSucceed)
-            assertEquals(-2, successLevels)
+            assertEquals(-2, netSuccessLevels)
         }
     }
 
@@ -113,7 +113,7 @@ class OpposedCheckFullTest {
 
         with (actorWins) {
             assertTrue(didSucceed)
-            assertEquals(2, successLevels)
+            assertEquals(2, netSuccessLevels)
         }
 
         setNextRolls(20, 20)
@@ -121,7 +121,7 @@ class OpposedCheckFullTest {
 
         with (receiverWins) {
             assertFalse(didSucceed)
-            assertEquals(-2, successLevels)
+            assertEquals(-2, netSuccessLevels)
         }
     }
     
@@ -132,7 +132,7 @@ class OpposedCheckFullTest {
         
         with (result) {
             assertFalse(didSucceed)
-            assertEquals(0, successLevels)
+            assertEquals(0, netSuccessLevels)
         }
     }
     
@@ -194,7 +194,7 @@ class OpposedCheckFullTest {
         
         with (result) {
             assertFalse { didSucceed }
-            assertEquals(0, successLevels)
+            assertEquals(0, netSuccessLevels)
         }
     }
 
@@ -205,7 +205,7 @@ class OpposedCheckFullTest {
 
         with (result) {
             assertTrue { didSucceed }
-            assertEquals(8, successLevels)
+            assertEquals(8, netSuccessLevels)
         }
     }
 

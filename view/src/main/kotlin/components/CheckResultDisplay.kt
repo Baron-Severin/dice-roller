@@ -125,20 +125,27 @@ private fun DIV.getCombatResultDisplay(
             if (crit != null) {
                 div(classes = Constants.Css.Class.CARD) {
                     p {
-                        span(classes = attackerSpan) { +"Critical hit!" }
+                        val (text, spanClass) = when (crit) {
+                            is CombatCrit.Hit -> "Critical Hit!" to attackerSpan
+                            is CombatCrit.Fumble -> "Fumble!" to defenderSpan
+                        }
+                        span(classes = spanClass) { +text }
                     }
                     p {
                         +"Crit Roll: ${crit.roll}"
                     }
-                    p {
-                        +crit.description
-                    }
-                    p {
-                        +"Extra Damage: "
-                        span(classes = attackerSpan) { +crit.extraWounds }
-                    }
-                    p {
-                        +crit.additionalEffects
+                    if (crit is CombatCrit.Hit) { // Will be on Fumble after oops is implemented
+                        p {
+
+                            +crit.description
+                        }
+                        p {
+                            +"Extra Damage: "
+                            span(classes = attackerSpan) { +crit.extraWounds }
+                        }
+                        p {
+                            +crit.additionalEffects
+                        }
                     }
                 }
             }

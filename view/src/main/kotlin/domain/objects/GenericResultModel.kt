@@ -48,7 +48,7 @@ fun CheckResult.toDisplay(): GenericResultModel = when(this) {
     is CheckResult.Opposed.Full -> GenericResultModel(
         inputs = null,
         didSucceed = this.didSucceed,
-        successLevels = this.successLevels,
+        successLevels = this.netSuccessLevels,
         didCrit = null,
         attack = null
     )

@@ -1,5 +1,5 @@
 
-fun CriticalHit.Companion.get(location: BodyLocation, critRoll: Int): CriticalHit {
+fun CombatCrit.Hit.Companion.get(location: BodyLocation, critRoll: Int): CombatCrit.Hit {
     fun List<CritData>.find(critRoll: Int) = this.first { critRoll in it.roll }
 
     val record = when(location) {
@@ -9,7 +9,7 @@ fun CriticalHit.Companion.get(location: BodyLocation, critRoll: Int): CriticalHi
         BodyLocation.BODY -> body.find(critRoll)
     }
 
-    return CriticalHit(critRoll, record.description, record.wounds, record.additionalEffects)
+    return CombatCrit.Hit(critRoll, record.description, record.wounds, record.additionalEffects)
 }
 
 private data class CritData(

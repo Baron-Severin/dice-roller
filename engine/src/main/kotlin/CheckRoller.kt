@@ -46,7 +46,8 @@ class CheckRoller(private val d100Roll: () -> Int) {
 
         return CheckResult.Opposed.Partial(
             inputs = result.inputs,
-            successLevels = result.successLevels
+            successLevels = result.successLevels,
+            didCrit = result.didCrit
         )
     }
 
@@ -71,7 +72,7 @@ class CheckRoller(private val d100Roll: () -> Int) {
             actorInputs = actorResult.inputs,
             receiverInputs = receiverResult.inputs,
             didSucceed = actorWins,
-            successLevels = successMargin,
+            netSuccessLevels = successMargin,
             actorDidCrit = didCrit(actorResult.inputs.roll),
             receiverDidCrit = didCrit(receiverResult.inputs.roll)
         )
@@ -82,39 +83,39 @@ class CheckRoller(private val d100Roll: () -> Int) {
 
         return CheckResult.Combat.Partial(
             inputs = result.inputs,
-            successLevels = result.successLevels
+            successLevels = result.successLevels,
+            didCrit = result.didCrit // TODO display as crit or fumble
         )
     }
 
-    // TODO combat model needs to be redone. Do that before testing, or they'll all need to be rewritten
     fun combatCheckFull(attackerThreshold: Int, defenderThreshold: Int): CheckResult.Combat.Full {
         val opposed = opposedCheckFull(attackerThreshold, defenderThreshold)
 
-        val attack = if (opposed.didSucceed) {
-            val location = hitLocation(opposed.actorInputs.roll)
-            val crit = if (opposed.didSucceed && didCrit(opposed.actorInputs.roll)) {
-                CriticalHit.get(location, d100Roll())
+        fun getCrit(inputs: CheckInputs): CombatCrit? {
+            if (!didCrit(inputs.roll)) return null
+
+            return if (inputs.margin >= 0) {
+                val location = hitLocation(inputs.roll)
+                CombatCrit.Hit.get(location, d100Roll())
             } else {
-                null
+                d100Roll() // TODO this will be used to roll on oops table. Makes tests work as expected
+                CombatCrit.Fumble(inputs.roll)
             }
+        }
+
+        val attack = if (opposed.didSucceed) {
             AttackDetails.Hit(
-                location = location,
-                netSuccessLevels = opposed.successLevels,
-                crit = crit
+                location = hitLocation(opposed.actorInputs.roll),
+                netSuccessLevels = opposed.netSuccessLevels,
+                crit = getCrit(opposed.actorInputs)
             )
         } else {
             AttackDetails.Miss(
-                netSuccessLevels = opposed.successLevels,
-                didFumble = didCrit(opposed.actorInputs.roll)
+                netSuccessLevels = opposed.netSuccessLevels,
+                crit = getCrit(opposed.actorInputs)
             )
         }
-
-        val defenderCrit = if (!opposed.didSucceed && didCrit(opposed.receiverInputs.roll)) {
-            val location = hitLocation(opposed.receiverInputs.roll)
-            CriticalHit.get(location, d100Roll())
-        } else {
-            null
-        }
+        val defenderCrit = getCrit(opposed.receiverInputs)
 
         return CheckResult.Combat.Full(
             attackerInputs = opposed.actorInputs,
