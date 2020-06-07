@@ -10,19 +10,13 @@ private val initialState = State(
 
 class Store(
     private var currentState: State = initialState,
-    private val display: (State, State?) -> Unit
+    private val display: (State) -> Unit
 ) {
     fun apply(event: Event) {
-        if (event is Event.Init) {
-            display(currentState, null)
-            return
-        }
-
-        val oldState = currentState
         log("Applying event: $event")
         currentState = reduce(currentState, event)
         log("New state: $currentState")
-        display(currentState, oldState)
+        display(currentState)
     }
 }
 

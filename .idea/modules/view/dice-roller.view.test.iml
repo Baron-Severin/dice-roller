@@ -4,7 +4,7 @@
     <facet type="kotlin-language" name="Kotlin">
       <configuration version="3" platform="JavaScript " allPlatforms="JS []" useProjectSettings="false" isTestModule="true" externalProjectId=":view" pureKotlinSourceFolders="$MODULE_DIR$/../../../view/src/test/kotlin;/Users/severinrudie/Desktop/personal-code/dice-roller/view/src/main/kotlin">
         <sourceSets>
-          <sourceSet>dice-roller.view.main~1</sourceSet>
+          <sourceSet>dice-roller.view.main</sourceSet>
         </sourceSets>
         <newMppModelJpsModuleKind>COMPILATION_AND_SOURCE_SET_HOLDER</newMppModelJpsModuleKind>
         <externalSystemTestTasks>browserTest|:view:test|Js</externalSystemTestTasks>
