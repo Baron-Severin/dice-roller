@@ -113,11 +113,12 @@ class CombatCheckFullTest {
     
     @Test
     fun crit_roll_should_be_unrelated_to_hit_roll() {
-        setNextRolls(11, 90, 3)
+        setNextRolls(11, 99, 3, 4)
         val result = roller.combatCheckFull(50, 50)
 
         assertEquals(11, result.attackerInputs.roll)
         assertEquals(3, (result.attack.crit as CombatCrit.Hit).roll)
+        assertEquals(4, result.defenderCrit!!.roll)
     }
 
     private fun setNextRolls(

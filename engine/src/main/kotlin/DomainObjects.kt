@@ -48,7 +48,8 @@ sealed class CheckResult {
         data class Partial(
             val inputs: CheckInputs,
             val successLevels: Int,
-            val didCrit: Boolean // todo bind to view // TODO this can be a CombatCrit?
+            val didCrit: Boolean,
+            val critRoll: Int
         ) : Combat() {
             override fun toString() = JSON.stringify(this)
         }
@@ -92,18 +93,22 @@ sealed class AttackDetails {
 
 sealed class CombatCrit {
     abstract val roll: Int
+    abstract val additionalEffects: String
 
     data class Hit(
         override val roll: Int,
         val description: String,
         val extraWounds: Int,
-        val additionalEffects: String
+        override val additionalEffects: String
     ) : CombatCrit() {
         override fun toString() = JSON.stringify(this)
         companion object
     }
     data class Fumble(
-        override val roll: Int
-        // TODO "oops table" on pg 160
-    ) : CombatCrit()
+        override val roll: Int, // TODO bind
+        override val additionalEffects: String // TODO bind
+    ) : CombatCrit() {
+        override fun toString() = JSON.stringify(this)
+        companion object
+    }
 }

@@ -13,7 +13,11 @@ enum class BodyLocation(val description: String) {
     RIGHT_LEG("Right Leg")
 }
 
-internal val realDiceRoll = { (Random.nextDouble() * 100).toInt() }
+internal val realDiceRoll = {
+    Random.nextInt(1, 101).also {
+        log("Rolled $it")
+    }
+}
 
 @VisibleForTesting(otherwise = VisibleForTesting.INTERNAL)
 class CheckRoller(private val d100Roll: () -> Int) {
@@ -56,16 +60,15 @@ class CheckRoller(private val d100Roll: () -> Int) {
         val receiverResult = dramaticCheck(receiverThreshold)
 
         val successMargin = actorResult.successLevels - receiverResult.successLevels
-        val actorWins = if (successMargin > 0) {
-            true
-        } else if (successMargin < 0) {
-            false
-        } else if (actorThreshold != receiverThreshold) {
-            actorThreshold > receiverThreshold
-        } else {
-            // Reroll to break the tie
-            // TODO optional rule, null result
-            return opposedCheckFull(actorThreshold, receiverThreshold)
+        val actorWins = when {
+            successMargin > 0 -> true
+            successMargin < 0 -> false
+            actorThreshold != receiverThreshold -> actorThreshold > receiverThreshold
+            else -> {
+                // Reroll to break the tie
+                // TODO optional rule, null result
+                return opposedCheckFull(actorThreshold, receiverThreshold)
+            }
         }
 
         return CheckResult.Opposed.Full(
@@ -84,7 +87,8 @@ class CheckRoller(private val d100Roll: () -> Int) {
         return CheckResult.Combat.Partial(
             inputs = result.inputs,
             successLevels = result.successLevels,
-            didCrit = result.didCrit // TODO display as crit or fumble
+            didCrit = result.didCrit,
+            critRoll = d100Roll()
         )
     }
 
@@ -100,8 +104,7 @@ class CheckRoller(private val d100Roll: () -> Int) {
                 val location = hitLocation(inputs.roll)
                 CombatCrit.Hit.get(location, d100Roll())
             } else if (inputs.margin < 0) {
-                d100Roll() // TODO this will be used to roll on oops table. Makes tests work as expected
-                CombatCrit.Fumble(inputs.roll)
+                CombatCrit.Fumble.get(d100Roll())
             } else {
                 null
             }
@@ -150,4 +153,8 @@ class CheckRoller(private val d100Roll: () -> Int) {
             else -> throw IllegalArgumentException("Roll must be within 1-100")
         }
     }
+}
+
+private fun log(text: String) {
+    println("CheckRoller: $text")
 }

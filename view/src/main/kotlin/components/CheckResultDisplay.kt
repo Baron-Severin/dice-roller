@@ -59,6 +59,12 @@ private fun CheckResultDisplay(
                 span(classes = spanClass) { +text }
             }
         }
+        if (critRoll != null) {
+            p {
+                +"Crit roll: "
+                span(classes = colorClass(null)) { +result.critRoll.toString() }
+            }
+        }
         if (addExtraBlock != null) {
             addExtraBlock()
         }
@@ -78,7 +84,7 @@ private fun DIV.getOpposedResultDisplay(
         }
         if (result.actorDidCrit) {
             // TODO view probably shouldnt be calculating this
-            val text = if (result.didSucceed) "Actor critical!" else "Actor fumble!"
+            val text = if (result.didSucceed) "Actor Critical!" else "Actor Fumble!"
             span(classes = actorSpanClass) { +text }
         }
         p {
@@ -86,7 +92,7 @@ private fun DIV.getOpposedResultDisplay(
             span(classes = receiverSpanClass) { +"(${result.receiverInputs.margin})" }
         }
         if (result.receiverDidCrit) {
-            val text = if (result.didSucceed) "Receiver critical!" else "Receiver fumble!"
+            val text = if (result.didSucceed) "Receiver Fumble!" else "Receiver Critical!"
             span(classes = actorSpanClass) { +text }
         }
         block?.invoke(this)
@@ -152,7 +158,7 @@ fun DIV.getCritCard(isAttacker: Boolean, crit: CombatCrit?) {
             +"Crit Roll: "
             span(colorClass(null)) { +crit.roll.toString() }
         }
-        if (crit is CombatCrit.Hit) { // Will be on Fumble after oops is implemented
+        if (crit is CombatCrit.Hit) {
             p {
 
                 +crit.description
@@ -161,9 +167,9 @@ fun DIV.getCritCard(isAttacker: Boolean, crit: CombatCrit?) {
                 +"Extra Damage: "
                 span(classes = goodSpan) { +crit.extraWounds }
             }
-            p {
-                +crit.additionalEffects
-            }
+        }
+        p {
+            +crit.additionalEffects
         }
     }
 }
