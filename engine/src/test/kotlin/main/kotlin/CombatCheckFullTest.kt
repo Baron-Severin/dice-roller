@@ -122,6 +122,7 @@ class CombatCheckFullTest {
     }
 
     @Test
+    @Ignore
     fun todo() { // TODO how should autohits/autofails interact with opposed rolls? what about when both people roll them?  Double check that this is working correctly
         setNextRolls(100, 100)
         val result = roller.combatCheckFull(101, 150)
