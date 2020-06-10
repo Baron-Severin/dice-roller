@@ -3,6 +3,7 @@ import data.flow.Dispatcher
 import data.flow.State
 import components.CheckResultDisplay
 import components.InputDisplay
+import components.LogDisplay
 import kotlin.browser.window
 
 private lateinit var dispatcher: Dispatcher
@@ -20,7 +21,8 @@ private fun display(state: State) {
         listOf(
             pagerTabContainer to PagerTabsDisplay(state.selectedPager, dispatcher),
             inputContainer to InputDisplay(state.selectedPager, dispatcher),
-            checkResultContainer to CheckResultDisplay(state.currentRollResults)
+            checkResultContainer to CheckResultDisplay(state.currentRollResults),
+            logContainer to LogDisplay(state.logs)
         )
     )
 

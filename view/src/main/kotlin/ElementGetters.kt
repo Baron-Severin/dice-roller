@@ -7,6 +7,7 @@ import kotlin.browser.document
 val checkResultContainer get() = get(Constants.Id.CHECK_RESULT_CONTAINER)!!
 val inputContainer get() = get(Constants.Id.INPUT_CONTAINER)!!
 val pagerTabContainer get() = get(Constants.Id.PAGER_TAB_CONTAINER)!!
+val logContainer get() = get(Constants.Id.LOG_CONTAINER)!!
 
 // Inputs
 val actorInput get() = get(Constants.Id.ACTOR_INPUT_ID) as HTMLInputElement

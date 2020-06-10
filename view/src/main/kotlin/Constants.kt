@@ -5,6 +5,7 @@ object Constants {
         const val PAGER_TAB_CONTAINER = "PAGER_TAB_CONTAINER"
         const val INPUT_CONTAINER = "INPUT_CONTAINER"
         const val CHECK_RESULT_CONTAINER = "CHECK_RESULT_CONTAINER"
+        const val LOG_CONTAINER = "LOG_CONTAINER"
 
         // Inputs
         const val ACTOR_INPUT_ID = "ACTOR_INPUT_ID"
@@ -22,6 +23,8 @@ object Constants {
             const val CARD = "card"
             const val PAGER_TAB = "pager-tab"
             const val PAGER_TAB_ACTIVE = "pager-tab-active"
+            const val THICK_BORDER = "thick-border"
+            const val HEADER = "header"
         }
     }
 }

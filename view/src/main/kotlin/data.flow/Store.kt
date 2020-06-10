@@ -5,7 +5,8 @@ import domain.objects.Pager
 
 private val initialState = State(
     selectedPager = Pager.SIMPLE_CHECK,
-    currentRollResults = CheckResult.None
+    currentRollResults = CheckResult.None,
+    logs = emptyList()
 )
 
 class Store(
@@ -23,8 +24,8 @@ class Store(
 data class State(
     val selectedPager: Pager,
     // TODO user input stuff
-    val currentRollResults: CheckResult
-    // TODO roll log
+    val currentRollResults: CheckResult,
+    val logs: List<CheckResult>
 )
 
 fun log(text: String) {

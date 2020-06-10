@@ -37,5 +37,8 @@ private fun reduce(state: State, event: Event.RollClicked): State {
         Pager.COMBAT_CHECK -> Check.combat(actorInput, receiverInput)
     }
 
-    return state.copy(currentRollResults = checkResult)
+    return state.copy(
+        currentRollResults = checkResult,
+        logs = (listOf(state.currentRollResults) + state.logs).take(10)
+    )
 }

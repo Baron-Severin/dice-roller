@@ -3,7 +3,7 @@ plugins {
 }
 
 group = "srudie.diceroller"
-version = "0.1-SNAPSHOT"
+version = ".1-SNAPSHOT"
 
 allprojects {
     repositories {

@@ -1,7 +1,7 @@
 
 sealed class CheckResult {
     object None : CheckResult() {
-        override fun toString() = JSON.stringify(this)
+        override fun toString() = "CheckResult.None"
     }
     data class Simple(
         val inputs: CheckInputs,

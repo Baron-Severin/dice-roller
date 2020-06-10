@@ -36,3 +36,14 @@
 input {
     margin-bottom: 12px;
 }
+
+.thick-border {
+    margin: 16px;
+    outline: 3px solid black;
+}
+
+.header {
+    margin: 0px;
+    padding: 12px;
+    font-size: 1.25em;
+}
