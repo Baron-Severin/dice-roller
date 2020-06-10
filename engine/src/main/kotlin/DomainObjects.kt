@@ -25,7 +25,7 @@ sealed class CheckResult {
         data class Partial(
             val inputs: CheckInputs,
             val successLevels: Int,
-            val didCrit: Boolean // todo bind to view
+            val crit: NonCombatCrit?
         ) : Opposed() {
             override fun toString() = JSON.stringify(this)
         }
@@ -35,8 +35,8 @@ sealed class CheckResult {
             val receiverInputs: CheckInputs,
             val didSucceed: Boolean,
             val netSuccessLevels: Int,
-            val actorDidCrit: Boolean, // TODO should be able to crit on fail and fumble on success
-            val receiverDidCrit: Boolean
+            val actorCrit: NonCombatCrit?,
+            val receiverCrit: NonCombatCrit?
         ) : Opposed() {
             override fun toString() = JSON.stringify(this)
         }
@@ -55,9 +55,9 @@ sealed class CheckResult {
         }
         data class Full(
             val attackerInputs: CheckInputs,
-            val defenderInputs: CheckInputs, // TODO success levels
+            val defenderInputs: CheckInputs,
             val attack: AttackDetails,
-            val defenderCrit: CombatCrit? // TODO bind to view // TODO is this the best way to represent this in the model?
+            val defenderCrit: CombatCrit?
         ) : Combat() {
             override fun toString() = JSON.stringify(this)
         }
@@ -91,6 +91,11 @@ sealed class AttackDetails {
     }
 }
 
+sealed class NonCombatCrit {
+    object Success : NonCombatCrit()
+    object Fumble : NonCombatCrit()
+}
+
 sealed class CombatCrit {
     abstract val roll: Int
     abstract val additionalEffects: String
@@ -105,8 +110,8 @@ sealed class CombatCrit {
         companion object
     }
     data class Fumble(
-        override val roll: Int, // TODO bind
-        override val additionalEffects: String // TODO bind
+        override val roll: Int,
+        override val additionalEffects: String
     ) : CombatCrit() {
         override fun toString() = JSON.stringify(this)
         companion object

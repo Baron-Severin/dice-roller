@@ -5,8 +5,6 @@ package main.kotlin
 import CheckRoller
 import kotlin.test.*
 
-// TODO there is a misunderstood rule here.  It should be possible to win while fumbling. Crit/fumbles should be based off your own SL, _not_ net SL
-
 class OpposedCheckFullTest {
     private val fakeDiceRoll: () -> Int = {
         assertTrue("nextRolls is empty. Did the check reroll with too few rolls provided?") {
@@ -142,49 +140,66 @@ class OpposedCheckFullTest {
         var result = roller.opposedCheckFull(50, 50)
 
         with (result) {
-            assertTrue(actorDidCrit)
-            assertTrue(receiverDidCrit)
+            assertNotNull(actorCrit)
+            assertNotNull(receiverCrit)
         }
 
         setNextRolls(33, 22)
         result = roller.opposedCheckFull(20, 20)
 
         with (result) {
-            assertTrue(actorDidCrit)
-            assertTrue(receiverDidCrit)
+            assertNotNull(actorCrit)
+            assertNotNull(receiverCrit)
         }
 
         setNextRolls(33, 54)
         result = roller.opposedCheckFull(50, 50)
 
         with (result) {
-            assertTrue(actorDidCrit)
-            assertFalse(receiverDidCrit)
+            assertNotNull(actorCrit)
+            assertNull(receiverCrit)
         }
 
         setNextRolls(33, 24)
         result = roller.opposedCheckFull(20, 20)
 
         with (result) {
-            assertTrue(actorDidCrit)
-            assertFalse(receiverDidCrit)
+            assertNotNull(actorCrit)
+            assertNull(receiverCrit)
         }
 
         setNextRolls(33, 23)
         result = roller.opposedCheckFull(50, 50)
 
         with (result) {
-            assertTrue(actorDidCrit)
-            assertFalse(receiverDidCrit)
+            assertNotNull(actorCrit)
+            assertNull(receiverCrit)
         }
 
-        setNextRolls(11, 35)
+        setNextRolls(35, 11)
         result = roller.opposedCheckFull(20, 20)
 
         with (result) {
-            assertTrue(actorDidCrit)
-            assertFalse(receiverDidCrit)
+            assertNull(actorCrit)
+            assertNotNull(receiverCrit)
         }
+    }
+    
+    @Test
+    fun crits_should_not_be_related_to_success() {
+        setNextRolls(88, 11)
+        var result = roller.opposedCheckFull(90, 90)
+
+        assertFalse { result.didSucceed }
+        assertTrue { result.actorCrit is NonCombatCrit.Success }
+        assertTrue { result.receiverCrit is NonCombatCrit.Success }
+
+        setNextRolls(77, 66)
+        result = roller.opposedCheckFull(10, 20)
+
+        assertFalse { result.didSucceed }
+        assertTrue { result.actorCrit is NonCombatCrit.Fumble }
+        assertTrue { result.receiverCrit is NonCombatCrit.Fumble }
     }
     
     @Test

@@ -5,6 +5,7 @@ package components
 import AttackDetails
 import CheckResult
 import CombatCrit
+import NonCombatCrit
 import domain.objects.GenericResultModel
 import kotlinx.html.*
 import kotlinx.html.dom.create
@@ -91,21 +92,24 @@ private fun DIV.getOpposedResultDisplay(
             +"Actor Roll/Skill Check: ${result.actorInputs.roll}/${result.actorInputs.threshold} "
             span(classes = actorSpanClass) { +"(${result.actorInputs.margin})" }
         }
-        if (result.actorDidCrit) {
-            // TODO view probably shouldnt be calculating this
-            val text = if (result.didSucceed) "Actor Critical!" else "Actor Fumble!"
-            span(classes = actorSpanClass) { +text }
-        }
+
+        getNonCombatCrit(result.actorCrit, "Actor", actorSpanClass)
+
         p {
             +"Receiver Roll/Skill Check: ${result.receiverInputs.roll}/${result.receiverInputs.threshold} "
             span(classes = receiverSpanClass) { +"(${result.receiverInputs.margin})" }
         }
-        if (result.receiverDidCrit) {
-            val text = if (result.didSucceed) "Receiver Fumble!" else "Receiver Critical!"
-            span(classes = actorSpanClass) { +text }
-        }
+
+        getNonCombatCrit(result.receiverCrit, "Receiver", actorSpanClass)
+
         block?.invoke(this)
     }
+}
+
+private fun DIV.getNonCombatCrit(crit: NonCombatCrit?, character: String, spanClass: String) = when (crit) {
+    is NonCombatCrit.Success -> span(classes = spanClass) { +"$character Critical!" }
+    is NonCombatCrit.Fumble -> span(classes = spanClass) { +"$character Fumble!" }
+    null -> null
 }
 
 private fun DIV.getCombatResultDisplay(
@@ -139,14 +143,14 @@ private fun DIV.getCombatResultDisplay(
                     span(classes = Constants.Css.Class.COLOR_INDETERMINATE_SUCCESS) { +attack.location.description }
                 }
             }
-            getCritCard(true, attack.crit)
+            getCombatCritCard(true, attack.crit)
         }
-        getCritCard(false, result.defenderCrit)
+        getCombatCritCard(false, result.defenderCrit)
         block?.invoke(this)
     }
 }
 
-fun DIV.getCritCard(isAttacker: Boolean, crit: CombatCrit?) {
+fun DIV.getCombatCritCard(isAttacker: Boolean, crit: CombatCrit?) {
     if (crit == null) return
 
     div(classes = Constants.Css.Class.CARD) {

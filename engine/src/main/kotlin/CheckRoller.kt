@@ -41,10 +41,18 @@ class CheckRoller(private val d100Roll: () -> Int) {
     fun opposedCheckPartial(actorThreshold: Int): CheckResult.Opposed.Partial {
         val result = dramaticCheck(actorThreshold)
 
+        val crit = if (result.didSucceed && result.didCrit) {
+            NonCombatCrit.Success
+        } else if (result.didCrit) {
+            NonCombatCrit.Fumble
+        } else {
+            null
+        }
+
         return CheckResult.Opposed.Partial(
             inputs = result.inputs,
             successLevels = result.successLevels,
-            didCrit = result.didCrit
+            crit = crit
         )
     }
 
@@ -71,13 +79,24 @@ class CheckRoller(private val d100Roll: () -> Int) {
             }
         }
 
+        fun getCrit(inputs: CheckInputs) = if (!didCrit(inputs.roll)) {
+            null
+        } else if (inputs.roll <= inputs.threshold) {
+            NonCombatCrit.Success
+        } else {
+            NonCombatCrit.Fumble
+        }
+
+        val actorCrit = getCrit(actorResult.inputs)
+        val receiverCrit = getCrit(receiverResult.inputs)
+
         return CheckResult.Opposed.Full(
             actorInputs = actorResult.inputs,
             receiverInputs = receiverResult.inputs,
             didSucceed = actorWins,
             netSuccessLevels = successMargin,
-            actorDidCrit = didCrit(actorResult.inputs.roll),
-            receiverDidCrit = didCrit(receiverResult.inputs.roll)
+            actorCrit = actorCrit,
+            receiverCrit = receiverCrit
         )
     }
 
