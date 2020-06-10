@@ -41,4 +41,4 @@ object HtmlHacks {
 
 private fun KeyboardEvent.isKeyUp() = this.code == "ArrowUp"
 private fun KeyboardEvent.isKeyDown() = this.code == "ArrowDown"
-private fun KeyboardEvent.isEnter() = this.code == "Enter"
+private fun KeyboardEvent.isEnter() = this.code == "Enter" || this.code == "NumpadEnter"
