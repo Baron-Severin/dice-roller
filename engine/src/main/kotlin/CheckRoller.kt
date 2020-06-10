@@ -1,6 +1,5 @@
 import kotlin.math.abs
 import kotlin.math.max
-import kotlin.random.Random
 import CheckResult.Dramatic
 import CheckResult.Simple
 
@@ -11,12 +10,6 @@ enum class BodyLocation(val description: String) {
     BODY("Body"),
     LEFT_LEG("Left Leg"),
     RIGHT_LEG("Right Leg")
-}
-
-internal val realDiceRoll = {
-    Random.nextInt(1, 101).also {
-        log("Rolled $it")
-    }
 }
 
 @VisibleForTesting(otherwise = VisibleForTesting.INTERNAL)
@@ -65,17 +58,15 @@ class CheckRoller(private val d100Roll: () -> Int) {
             successMargin < 0 -> false
             actorThreshold != receiverThreshold -> actorThreshold > receiverThreshold
             else -> {
-                // Reroll to break the tie
                 // TODO optional rule, null result
-                log("opposedCheckFull: SL and threshold tie.  Rerolling")
-                // TODO these should all be debug level logs
+                log.d("opposedCheckFull: SL and threshold tie.  Rerolling")
                 listOf(
                     "Actor Roll/Threshold: ${actorResult.inputs.roll}/${actorThreshold}",
                     "Receiver Roll/Threshold: ${receiverResult.inputs.roll}/${receiverThreshold}",
                     "Actor SLs: ${actorResult.successLevels}",
                     "Receiver SLs: ${receiverResult.successLevels}",
                     "Success Margin: $successMargin"
-                ).forEach { log("opposedCheckFull: Actor success levels: $it") }
+                ).forEach { log.d("opposedCheckFull: $it") }
                 return opposedCheckFull(actorThreshold, receiverThreshold)
             }
         }
@@ -162,8 +153,6 @@ class CheckRoller(private val d100Roll: () -> Int) {
             else -> throw IllegalArgumentException("Roll must be within 1-100")
         }
     }
-}
 
-private fun log(text: String) {
-    println("CheckRoller: $text")
+    private val log = Logger(this)
 }

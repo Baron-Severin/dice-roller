@@ -1,5 +1,12 @@
+import kotlin.random.Random
 
 object Check {
+
+    internal val realDiceRoll = {
+        Random.nextInt(1, 101).also {
+            log.d("Rolled $it")
+        }
+    }
 
     private val roller = CheckRoller(realDiceRoll)
 
@@ -26,4 +33,6 @@ object Check {
             roller.combatCheckPartial(attackerThreshold)
         }
     }
+
+    private val log = Logger(this)
 }
