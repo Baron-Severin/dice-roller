@@ -1,6 +1,9 @@
+@file:Suppress("TestFunctionName")
+
 package main.kotlin
 
 import AttackDetails
+import CheckResult
 import CheckRoller
 import CombatCrit
 import kotlin.test.*
@@ -75,6 +78,34 @@ class CombatCheckFullTest {
     }
     
     @Test
+    fun nondouble_rolls_should_not_crit() {
+        fun CheckResult.Combat.Full.assertNoCrits() {
+            assertNull(attack.crit)
+            assertNull(defenderCrit)
+        }
+
+        setNextRolls(1, 2)
+        var result = roller.combatCheckFull(100, 99)
+        result.assertNoCrits()
+
+        setNextRolls(10, 12)
+        result = roller.combatCheckFull(100, 80)
+        result.assertNoCrits()
+
+        setNextRolls(25, 21)
+        result = roller.combatCheckFull(74, 100)
+        result.assertNoCrits()
+
+        setNextRolls(97, 32)
+        result = roller.combatCheckFull(12, 11)
+        result.assertNoCrits()
+
+        setNextRolls(51, 38)
+        result = roller.combatCheckFull(33, 55)
+        result.assertNoCrits()
+    }
+    
+    @Test
     fun GIVEN_actor_did_miss_WHEN_actor_rolls_double_THEN_there_should_be_no_crit() {
         setNextRolls(99, 11, 5, 5)
         var result = roller.combatCheckFull(50, 50)
@@ -122,12 +153,37 @@ class CombatCheckFullTest {
     }
 
     @Test
-    @Ignore
-    fun todo() { // TODO how should autohits/autofails interact with opposed rolls? what about when both people roll them?  Double check that this is working correctly
-        setNextRolls(100, 100)
-        val result = roller.combatCheckFull(101, 150)
+    fun combat_rolls_should_follow_higher_SL_then_higher_threshold_then_reroll_precedence() {
+        // Higher SL wins
+        setNextRolls(90, 90)
+        var result = roller.combatCheckFull(110, 150)
+        assertTrue { result.attack is AttackDetails.Miss }
+        
+        // Higher threshold wins
+        setNextRolls(40, 49)
+        result = roller.combatCheckFull(50, 51)
+        assertTrue { result.attack is AttackDetails.Miss }
+        
+        // Reroll
+        setNextRolls(90, 90, 1, 50)
+        result = roller.combatCheckFull(110, 110)
+        assertTrue { result.attack is AttackDetails.Hit }
+    }
 
-        // What is the expected behavior here?
+    @Test
+    fun WHEN_both_chars_auto_hit_THEN_higher_SL_should_win() {
+        setNextRolls(5, 1)
+        val result = roller.combatCheckFull(50, 20)
+
+        assertTrue { result.attack is AttackDetails.Hit }
+    }
+
+    @Test
+    fun WHEN_both_chars_auto_miss_THEN_higher_SL_should_win() {
+        setNextRolls(98, 96)
+        val result = roller.combatCheckFull(50, 20)
+
+        assertTrue { result.attack is AttackDetails.Hit }
     }
 
     private fun setNextRolls(

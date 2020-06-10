@@ -67,6 +67,15 @@ class CheckRoller(private val d100Roll: () -> Int) {
             else -> {
                 // Reroll to break the tie
                 // TODO optional rule, null result
+                log("opposedCheckFull: SL and threshold tie.  Rerolling")
+                // TODO these should all be debug level logs
+                listOf(
+                    "Actor Roll/Threshold: ${actorResult.inputs.roll}/${actorThreshold}",
+                    "Receiver Roll/Threshold: ${receiverResult.inputs.roll}/${receiverThreshold}",
+                    "Actor SLs: ${actorResult.successLevels}",
+                    "Receiver SLs: ${receiverResult.successLevels}",
+                    "Success Margin: $successMargin"
+                ).forEach { log("opposedCheckFull: Actor success levels: $it") }
                 return opposedCheckFull(actorThreshold, receiverThreshold)
             }
         }
