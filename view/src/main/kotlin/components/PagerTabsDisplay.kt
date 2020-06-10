@@ -18,7 +18,6 @@ fun PagerTabsDisplay(selected: Pager, dispatcher: Dispatcher): HTMLElement {
         id = Constants.Id.PAGER_TAB_CONTAINER
         Pager.values().map { pager ->
             val cssClasses = listOfNotNull(
-                Constants.Css.Class.CARD,
                 Constants.Css.Class.PAGER_TAB,
                 if (pager == selected) Constants.Css.Class.PAGER_TAB_ACTIVE else null
             ).joinToString(separator = " ")
