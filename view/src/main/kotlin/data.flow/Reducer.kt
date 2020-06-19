@@ -39,6 +39,8 @@ private fun reduce(state: State, event: Event.RollClicked): State {
 
     return state.copy(
         currentRollResults = checkResult,
-        logs = (listOf(state.currentRollResults) + state.logs).take(4)
+        logs = (listOf(state.currentRollResults) + state.logs)
+            .filter { it !is CheckResult.None }
+            .take(4)
     )
 }
