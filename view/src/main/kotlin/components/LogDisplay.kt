@@ -24,6 +24,6 @@ fun LogDisplay(logs: List<CheckResult>) = document.create.div {
     }
 }.apply {
     logs.map {
-        CheckResultDisplay(it)
+        CheckResultDisplay(it, isPrimaryDisplay = false)
     }.forEach { append(it) }
 }

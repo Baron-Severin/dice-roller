@@ -13,7 +13,7 @@ import org.w3c.dom.HTMLElement
 import domain.objects.toDisplay
 import kotlin.browser.document
 
-fun CheckResultDisplay(result: CheckResult): HTMLElement {
+fun CheckResultDisplay(result: CheckResult, isPrimaryDisplay: Boolean = true): HTMLElement {
     val extraBlock: (DIV.() -> Unit)? = when (result) {
         is CheckResult.Opposed.Full -> {
             { getOpposedResultDisplay(result) }
@@ -27,7 +27,7 @@ fun CheckResultDisplay(result: CheckResult): HTMLElement {
     return if (result is CheckResult.None) {
         EmptyCaseDisplay()
     } else {
-        CheckResultDisplay(result.toDisplay(), extraBlock)
+        CheckResultDisplay(result.toDisplay(), isPrimaryDisplay, extraBlock)
     }
 }
 
@@ -38,9 +38,10 @@ private fun EmptyCaseDisplay(): HTMLElement = document.create.div {
 
 private fun CheckResultDisplay(
     result: GenericResultModel,
+    isPrimaryDisplay: Boolean = true,
     addExtraBlock: (DIV.() -> Unit)? = null
 ): HTMLElement = document.create.div(classes = Constants.Css.Class.CARD) {
-    id = Constants.Id.CHECK_RESULT_CONTAINER
+    if (isPrimaryDisplay) id = Constants.Id.CHECK_RESULT_CONTAINER
 
     val spanClass = colorClass(result.didSucceed)
     with (result) {
@@ -118,24 +119,25 @@ private fun DIV.getCombatResultDisplay(
 ) {
     div(classes = Constants.Css.Class.CARD) {
         val attack = result.attack
-        val attackerSpan = colorClass(attack is AttackDetails.Hit)
-        val defenderSpan = colorClass(attack is AttackDetails.Miss)
         p {
             +"Attacker Roll/Skill Check: ${result.attackerInputs.roll}/${result.attackerInputs.threshold} "
-            span(classes = attackerSpan) { +result.attackerInputs.margin.toString() }
+            val attackerSlColor = colorClass(result.attackerInputs.margin >= 0)
+            span(classes = attackerSlColor) { +result.attackerInputs.margin.toString() }
         }
         p {
             +"Defender Roll/Skill Check: ${result.defenderInputs.roll}/${result.defenderInputs.threshold} "
-            span(classes = defenderSpan) { +result.defenderInputs.margin.toString() }
+            val defenderSlColor = colorClass(result.defenderInputs.margin >= 0)
+            span(classes = defenderSlColor) { +result.defenderInputs.margin.toString() }
         }
 
         div(classes = Constants.Css.Class.CARD) {
+            val attackerColor = colorClass(attack is AttackDetails.Hit)
             p {
-                span(classes = attackerSpan) { +attack.description() }
+                span(classes = attackerColor) { +attack.description() }
             }
             p {
                 +"Net Success Levels: "
-                span(classes = attackerSpan) { +attack.netSuccessLevels.toString() }
+                span(classes = attackerColor) { +attack.netSuccessLevels.toString() }
             }
             if (attack is AttackDetails.Hit) {
                 p {

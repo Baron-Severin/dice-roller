@@ -46,6 +46,14 @@ input {
     top: 0px;
 }
 
+#LOG_CONTAINER > div:last-child {
+    margin-bottom: 0px;
+}
+
+#LOG_CONTAINER > div {
+    margin-bottom: 20px;
+}
+
 .thick-border {
     margin: 16px;
     outline: 3px solid black;
