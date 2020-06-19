@@ -4,6 +4,7 @@ package components
 
 import data.flow.Dispatcher
 import domain.objects.Pager
+import kotlinx.html.classes
 import kotlinx.html.div
 import kotlinx.html.dom.create
 import kotlinx.html.id
@@ -29,5 +30,6 @@ fun PagerTabsDisplay(selected: Pager, dispatcher: Dispatcher): HTMLElement {
                 }
             }
         }
+        p(classes = "description-text") { +selected.description }
     }
 }

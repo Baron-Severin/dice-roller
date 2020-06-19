@@ -56,3 +56,11 @@ input {
     padding: 12px;
     font-size: 1.25em;
 }
+
+.description-text {
+    font-style: italic;
+}
+
+#PAGER_TAB_CONTAINER > .description-text {
+    margin-top: 0px;
+}

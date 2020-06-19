@@ -4,7 +4,7 @@ import CheckResult
 import domain.objects.Pager
 
 private val initialState = State(
-    selectedPager = Pager.SIMPLE_CHECK,
+    selectedPager = Pager.DRAMATIC_CHECK,
     currentRollResults = CheckResult.None,
     logs = emptyList()
 )
