@@ -88,7 +88,6 @@ private fun DIV.getOpposedResultDisplay(
 ) {
     div {
         val actorSpanClass = colorClass(result.didSucceed)
-        val receiverSpanClass = colorClass(!result.didSucceed)
         p {
             +"Actor Roll/Skill Check: ${result.actorInputs.roll}/${result.actorInputs.threshold} "
             span(classes = actorSpanClass) { +"(${result.actorInputs.margin})" }
@@ -96,12 +95,13 @@ private fun DIV.getOpposedResultDisplay(
 
         getNonCombatCrit(result.actorCrit, "Actor", actorSpanClass)
 
+        val receiverSpanClass = colorClass(!result.didSucceed)
         p {
             +"Receiver Roll/Skill Check: ${result.receiverInputs.roll}/${result.receiverInputs.threshold} "
             span(classes = receiverSpanClass) { +"(${result.receiverInputs.margin})" }
         }
 
-        getNonCombatCrit(result.receiverCrit, "Receiver", actorSpanClass)
+        getNonCombatCrit(result.receiverCrit, "Receiver", receiverSpanClass)
 
         block?.invoke(this)
     }
