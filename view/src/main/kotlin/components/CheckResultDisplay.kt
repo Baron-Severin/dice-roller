@@ -70,12 +70,6 @@ private fun CheckResultDisplay(
                 span(classes = spanClass) { +text }
             }
         }
-        if (critRoll != null) {
-            p {
-                +"Crit roll: "
-                span(classes = colorClass(null)) { +result.critRoll.toString() }
-            }
-        }
         if (addExtraBlock != null) {
             addExtraBlock()
         }
@@ -168,10 +162,6 @@ fun DIV.getCombatCritCard(isAttacker: Boolean, crit: CombatCrit?) {
                 is CombatCrit.Fumble -> "$participant Fumble!" to badSpan
             }
             span(classes = spanClass) { +text }
-        }
-        p {
-            +"Crit Roll: "
-            span(colorClass(null)) { +crit.roll.toString() }
         }
         if (crit is CombatCrit.Hit) {
             p {
