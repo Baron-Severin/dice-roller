@@ -16,11 +16,15 @@ object Constants {
     }
     object Css {
         object Class {
+            private object MaterialIo {
+                const val CARD = "mdc-card"
+            }
+
             const val NONE = ""
             const val COLOR_INDETERMINATE_SUCCESS = "color-indeterminate-success"
             const val COLOR_SUCCESS = "color-success"
             const val COLOR_FAILURE = "color-failure"
-            const val CARD = "card"
+            const val CARD = "card ${MaterialIo.CARD}"
             const val PAGER_TAB = "pager-tab"
             const val PAGER_TAB_ACTIVE = "pager-tab-active"
             const val THICK_BORDER = "thick-border"

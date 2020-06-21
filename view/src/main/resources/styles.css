@@ -1,4 +1,8 @@
 
+body {
+    background: #f0f0f0;
+}
+
 .color-success {
     color: green;
 }
@@ -12,10 +16,9 @@
 }
 
 .card {
-    outline: solid;
     padding: 4px;
     width: 600px;
-    // TODO literal width is not very responsive
+    // TODO use columns instead of pixels
 }
 
 .pager-tab {
