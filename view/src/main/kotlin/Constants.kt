@@ -13,18 +13,25 @@ object Constants {
 
         // Buttons
         const val ROLL_BUTTON = "ROLL_BUTTON"
+
+        // Wrappers
+        const val LOG_RESULT_WRAPPER = "LOG_RESULT_WRAPPER"
     }
     object Css {
         object Class {
             private object MaterialIo {
                 const val CARD = "mdc-card"
+                const val FLAT_CARD = "mdc-card mdc-card--outlined"
             }
 
             const val NONE = ""
             const val COLOR_INDETERMINATE_SUCCESS = "color-indeterminate-success"
-            const val COLOR_SUCCESS = "color-success"
-            const val COLOR_FAILURE = "color-failure"
+            const val COLOR_GOOD = "color-good"
+            const val FILTER_GOOD = "filter-good"
+            const val COLOR_BAD = "color-bad"
+            const val FILTER_BAD = "filter-bad"
             const val CARD = "card ${MaterialIo.CARD}"
+            const val FLAT_CARD = "card flat-card ${MaterialIo.FLAT_CARD}"
             const val PAGER_TAB = "pager-tab"
             const val PAGER_TAB_ACTIVE = "pager-tab-active"
             const val THICK_BORDER = "thick-border"

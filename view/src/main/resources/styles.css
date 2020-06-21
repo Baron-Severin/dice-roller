@@ -3,12 +3,20 @@ body {
     background: #f0f0f0;
 }
 
-.color-success {
+.color-good {
     color: green;
 }
 
-.color-failure {
+.filter-good {
+    background: #00FF0030 !important; // TODO important overrides some material.io.  How else can I accomplish this?
+}
+
+.color-bad {
     color: red;
+}
+
+.filter-bad {
+    background: #FF000030 !important; // TODO important overrides some material.io.  How else can I accomplish this?
 }
 
 .color-indeterminate-success {
@@ -21,6 +29,11 @@ body {
     // TODO use columns instead of pixels
 }
 
+.flat-card {
+    margin-start: 0px;
+    margin-end: 0px;
+}
+
 .pager-tab {
     outline: 1px solid black;
     display: inline-block;
@@ -28,14 +41,15 @@ body {
     margin-top: 5px;
     margin-bottom: 5px;
     cursor: pointer;
-}
-
-.pager-tab p {
-    margin: 0px;
+    background: white;
 }
 
 .pager-tab-active {
     outline: 2px solid blue;
+}
+
+.pager-tab p {
+    margin: 0px;
 }
 
 input {
@@ -49,12 +63,12 @@ input {
     top: 0px;
 }
 
-#LOG_CONTAINER > div:last-child {
-    margin-bottom: 0px;
+#LOG_RESULT_WRAPPER > div:first-child {
+    margin-top: 12px;
 }
 
-#LOG_CONTAINER > div {
-    margin-bottom: 20px;
+#LOG_RESULT_WRAPPER > div {
+    margin-top: 20px;
 }
 
 .thick-border {
@@ -66,6 +80,7 @@ input {
     margin: 0px;
     padding: 12px;
     font-size: 1.25em;
+    background: white;
 }
 
 .description-text {

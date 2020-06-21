@@ -13,7 +13,23 @@ import org.w3c.dom.HTMLElement
 import domain.objects.toDisplay
 import kotlin.browser.document
 
-fun CheckResultDisplay(result: CheckResult, isPrimaryDisplay: Boolean = true): HTMLElement {
+// TODO this file has gotten very messy and needs a refactor
+
+fun CheckResultDisplay(result: CheckResult): HTMLElement {
+    return if (result is CheckResult.None) {
+        document.create.div {
+            id = Constants.Id.CHECK_RESULT_CONTAINER
+            // TODO should there be some explanation text here?
+        }
+    } else {
+        document.create.div {
+            id = Constants.Id.CHECK_RESULT_CONTAINER
+            CheckResult(result)()
+        }
+    }
+}
+
+fun CheckResult(result: CheckResult): DIV.() -> Unit {
     val extraBlock: (DIV.() -> Unit)? = when (result) {
         is CheckResult.Opposed.Full -> {
             { getOpposedResultDisplay(result) }
@@ -24,54 +40,44 @@ fun CheckResultDisplay(result: CheckResult, isPrimaryDisplay: Boolean = true): H
         else -> null
     }
 
-    return if (result is CheckResult.None) {
-        EmptyCaseDisplay()
-    } else {
-        CheckResultDisplay(result.toDisplay(), isPrimaryDisplay, extraBlock)
-    }
+    return CheckResult(result.toDisplay(), extraBlock)
 }
 
-private fun EmptyCaseDisplay(): HTMLElement = document.create.div {
-    id = Constants.Id.CHECK_RESULT_CONTAINER
-    // TODO should there be some explanation text here?
-}
-
-private fun CheckResultDisplay(
+private fun CheckResult(
     result: GenericResultModel,
-    isPrimaryDisplay: Boolean = true,
     addExtraBlock: (DIV.() -> Unit)? = null
-): HTMLElement = document.create.div(classes = Constants.Css.Class.CARD) {
-    if (isPrimaryDisplay) id = Constants.Id.CHECK_RESULT_CONTAINER
-
-    val spanClass = colorClass(result.didSucceed)
-    with (result) {
-        didSucceed?.let { didSucceed ->
-            p {
-                +"Did succeed: "
-                span(classes = spanClass) { +didSucceed.toString() }
+): DIV.() -> Unit = {
+    div(classes = Constants.Css.Class.CARD) {
+        val spanClass = colorClass(result.didSucceed)
+        with (result) {
+            didSucceed?.let { didSucceed ->
+                p {
+                    +"Did succeed: "
+                    span(classes = spanClass) { +didSucceed.toString() }
+                }
             }
-        }
-        inputs?.let { inputs ->
-            p {
-                +"Roll/Difficulty: ${inputs.roll}/${inputs.threshold} "
-                span(classes = spanClass) { +"(${inputs.margin})" }
+            inputs?.let { inputs ->
+                p {
+                    +"Roll/Difficulty: ${inputs.roll}/${inputs.threshold} "
+                    span(classes = spanClass) { +"(${inputs.margin})" }
+                }
             }
-        }
-        successLevels?.let { successLevels ->
-            p {
-                +"Success Levels: "
-                span(classes = spanClass) { +successLevels.toString() }
+            successLevels?.let { successLevels ->
+                p {
+                    +"Success Levels: "
+                    span(classes = spanClass) { +successLevels.toString() }
+                }
             }
-        }
-        if (didCrit == true) {
-            p {
-                // TODO had to !! didSucceed.  Revisit model
-                val text = if (result.didSucceed!!) "Critical!" else "Fumble!"
-                span(classes = spanClass) { +text }
+            if (didCrit == true) {
+                p {
+                    // TODO had to !! didSucceed.  Revisit model
+                    val text = if (result.didSucceed!!) "Critical!" else "Fumble!"
+                    span(classes = spanClass) { +text }
+                }
             }
-        }
-        if (addExtraBlock != null) {
-            addExtraBlock()
+            if (addExtraBlock != null) {
+                addExtraBlock()
+            }
         }
     }
 }
@@ -111,7 +117,7 @@ private fun DIV.getCombatResultDisplay(
     result: CheckResult.Combat.Full,
     block: (DIV.() -> Unit)? = null
 ) {
-    div(classes = Constants.Css.Class.CARD) {
+    div(classes = Constants.Css.Class.FLAT_CARD) {
         val attack = result.attack
         p {
             +"Attacker Roll/Skill Check: ${result.attackerInputs.roll}/${result.attackerInputs.threshold} "
@@ -124,7 +130,7 @@ private fun DIV.getCombatResultDisplay(
             span(classes = defenderSlColor) { +result.defenderInputs.margin.toString() }
         }
 
-        div(classes = Constants.Css.Class.CARD) {
+        div(classes = Constants.Css.Class.FLAT_CARD) {
             val attackerColor = colorClass(attack is AttackDetails.Hit)
             p {
                 span(classes = attackerColor) { +attack.description() }
@@ -149,12 +155,18 @@ private fun DIV.getCombatResultDisplay(
 fun DIV.getCombatCritCard(isAttacker: Boolean, crit: CombatCrit?) {
     if (crit == null) return
 
-    div(classes = Constants.Css.Class.CARD) {
-        val (goodSpan, badSpan, participant) = if (isAttacker) {
-            Triple(colorClass(true), colorClass(false), "Attacker")
-        } else {
-            Triple(colorClass(false), colorClass(true), "Defender")
-        }
+    val (goodSpan, badSpan, participant) = Triple(
+        colorClass(isAttacker),
+        colorClass(!isAttacker),
+        if (isAttacker) "Attacker" else "Defender"
+    )
+    val divFilter = if (isAttacker == (crit is CombatCrit.Hit)) {
+        Constants.Css.Class.FILTER_GOOD
+    } else {
+        Constants.Css.Class.FILTER_BAD
+    }
+
+    div(classes = "${Constants.Css.Class.FLAT_CARD} $divFilter") {
 
         p {
             val (text, spanClass) = when (crit) {
@@ -181,6 +193,6 @@ fun DIV.getCombatCritCard(isAttacker: Boolean, crit: CombatCrit?) {
 
 private fun colorClass(didSucceed: Boolean?): String = when (didSucceed) {
     null -> Constants.Css.Class.COLOR_INDETERMINATE_SUCCESS
-    true -> Constants.Css.Class.COLOR_SUCCESS
-    false -> Constants.Css.Class.COLOR_FAILURE
+    true -> Constants.Css.Class.COLOR_GOOD
+    false -> Constants.Css.Class.COLOR_BAD
 }
